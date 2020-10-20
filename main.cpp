@@ -62,7 +62,7 @@ GLfloat gEnemyJetSpeed = 0.9* 0.01 * gPlayerSpeed;
 GLfloat gFinalLetterSpeed = 1.2 * gEnemyJetSpeed;
 int windowX = 0;
 int windowY = 0;
-
+bool gbStretch = false;
 
 //GLfloat angle = 0.0f;
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int iCmdShow) {
@@ -218,12 +218,25 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam) {
 		//}
 		 
 		break;
+
 	case WM_LBUTTONDOWN:
+		gbStretch = true;
+		break;
+
+	case WM_LBUTTONUP:
+		Bullet tempBullet;
+		tempBullet.position.x = gPlayer.position.x;
+		tempBullet.position.y = gPlayer.position.y;
+
+		gBullets.push_back(tempBullet);
+		gbStretch = false;
+		break;
+	/*case WM_LBUTTONDOWN:
 		Bullet tempBullet;
 		tempBullet.position.x = gPlayer.position.x;
 		tempBullet.position.y = gPlayer.position.y;
 		gBullets.push_back(tempBullet);
-		break;
+		break;*/
 	case WM_CLOSE:
 		DestroyWindow(hwnd);
 		break;
@@ -330,18 +343,20 @@ void Display(void) {
 	void drawEnemyJet(GLfloat, GLfloat);
 	void drawAircraft2(GLfloat, GLfloat);
 	void H1(GLfloat, GLfloat);
-	
+	void DrawArrow(GLfloat, GLfloat);
+	void DrawBow(GLfloat, GLfloat);
 	void A1(void);
 
 	glClear(GL_COLOR_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glTranslatef(0.0f, 0.0f, -6.0f);
+	glTranslatef(0.0f, 0.0f, -10.0f);
 	//H1();
 	//A1();
 	if (!gBullets.empty()) {
 		for (int i = 0; i < gBullets.size(); i++) {
-			drawBullet(gBullets[i].position.x, gBullets[i].position.y);
+			//drawBullet(gBullets[i].position.x, gBullets[i].position.y);
+			DrawArrow(gBullets[i].position.x, gBullets[i].position.y);
 		}
 	}
 	if (!gEnemyJets.empty()) {
@@ -353,7 +368,8 @@ void Display(void) {
 			glTranslatef(0.0f, 0.5f, 0.0f);
 		}
 	}
-	drawAircraft2(gPlayer.position.x, gPlayer.position.y);
+	//drawAircraft2(gPlayer.position.x, gPlayer.position.y);
+	DrawBow(gPlayer.position.x, gPlayer.position.y);
 	//checkCollision(gBallXTranslation, gBallYTranslation);
 	SwapBuffers(ghdc);
 }
@@ -576,3 +592,165 @@ void drawAircraft2(GLfloat xPos, GLfloat yPos) {
 
 }
 
+void DrawArrow(GLfloat xPos, GLfloat yPos)
+{
+	glBegin(GL_TRIANGLES);
+	glColor3f(0.9f, 0.2f, 0.2f);
+	glVertex3f(xPos, yPos, 0.0f);
+	glVertex3f(xPos - 0.2f, yPos - 0.5f, 0.0f);
+	glVertex3f(xPos, yPos - 0.3f, 0.0f);
+
+	glVertex3f(xPos, yPos, 0.0f);
+	glVertex3f(xPos, yPos - 0.3f, 0.0f);
+	glVertex3f(xPos + 0.2f, yPos - 0.5f, 0.0f);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glColor3f(0.9f, 0.2f, 0.2f);
+	glVertex3f(xPos - 0.04f, yPos - 0.3f, 0.0f);
+	glVertex3f(xPos - 0.04f, yPos - 1.8f, 0.0f);
+	glVertex3f(xPos + 0.04f, yPos - 1.8f, 0.0f);
+	glVertex3f(xPos + 0.04f, yPos - 0.3f, 0.0f);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glColor3f(0.9f, 0.2f, 0.2f);
+	glVertex3f(xPos - 0.0f, yPos - 1.6f, 0.0f);
+	glVertex3f(xPos - 0.15f, yPos - 1.8f, 0.0f);
+	glVertex3f(xPos - 0.15f, yPos - 2.0f, 0.0f);
+	glVertex3f(xPos - 0.0f, yPos - 1.8f, 0.0f);
+
+	glVertex3f(xPos + 0.0f, yPos - 1.6f, 0.0f);
+	glVertex3f(xPos + 0.15f, yPos - 1.8f, 0.0f);
+	glVertex3f(xPos + 0.15f, yPos - 2.0f, 0.0f);
+	glVertex3f(xPos + 0.0f, yPos - 1.8f, 0.0f);
+	glEnd();
+}
+
+void DrawBow(GLfloat xPos, GLfloat yPos)
+{
+	void DrawBow(GLfloat, GLfloat);
+
+	GLfloat bowTop = yPos - 1.0f;
+	GLfloat strMidY = bowTop - 0.8f;
+
+	if (gbStretch)
+		DrawArrow(xPos, yPos - 0.3f);
+
+	// stretchString position
+	if (gbStretch)
+		strMidY = bowTop - 1.1f;
+
+
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glBegin(GL_QUADS);
+	glColor3f(0.9f, 0.2f, 0.2f);
+	glVertex3f(xPos - 0.2f, bowTop, 0.0f);
+	glVertex3f(xPos - 0.3f, bowTop - 0.1, 0.0f);
+	glVertex3f(xPos + 0.3f, bowTop - 0.1, 0.0f);
+	glVertex3f(xPos + 0.2f, bowTop, 0.0f);
+
+	glVertex3f(xPos - 0.2f, bowTop, 0.0f);
+	glVertex3f(xPos - 0.5f, bowTop + 0.2f, 0.0f);
+	glVertex3f(xPos - 0.6f, bowTop + 0.1f, 0.0f);
+	glVertex3f(xPos - 0.3f, bowTop - 0.1, 0.0f);
+
+	glVertex3f(xPos - 0.5f, bowTop + 0.2f, 0.0f);
+	glVertex3f(xPos - 0.7f, bowTop + 0.4f, 0.0f);
+	glVertex3f(xPos - 0.8f, bowTop + 0.2, 0.0f);
+	glVertex3f(xPos - 0.6f, bowTop + 0.1f, 0.0f);
+
+	glVertex3f(xPos - 0.7f, bowTop + 0.4f, 0.0f);
+	glVertex3f(xPos - 0.8f, bowTop + 0.5f, 0.0f);
+	glVertex3f(xPos - 0.9f, bowTop + 0.2f, 0.0f);
+	glVertex3f(xPos - 0.8f, bowTop + 0.2, 0.0f);
+
+	glVertex3f(xPos - 0.8f, bowTop + 0.5f, 0.0f);
+	glVertex3f(xPos - 1.1f, bowTop + 0.5f, 0.0f);
+	glVertex3f(xPos - 1.0f, bowTop + 0.2f, 0.0f);
+	glVertex3f(xPos - 0.9f, bowTop + 0.2f, 0.0f);
+
+	glVertex3f(xPos - 1.1f, bowTop + 0.5f, 0.0f);
+	glVertex3f(xPos - 1.3f, bowTop + 0.47f, 0.0f);
+	glVertex3f(xPos - 1.1f, bowTop + 0.2f, 0.0f);
+	glVertex3f(xPos - 1.0f, bowTop + 0.2f, 0.0f);
+
+	glVertex3f(xPos - 1.3f, bowTop + 0.47f, 0.0f);
+	glVertex3f(xPos - 1.5f, bowTop + 0.30f, 0.0f);
+	glVertex3f(xPos - 1.3f, bowTop + 0.15f, 0.0f);
+	glVertex3f(xPos - 1.1f, bowTop + 0.2f, 0.0f);
+
+	glVertex3f(xPos - 1.5f, bowTop + 0.30f, 0.0f);
+	glVertex3f(xPos - 2.5f, bowTop - 0.8f, 0.0f);
+	glVertex3f(xPos - 2.48f, bowTop - 0.82f, 0.0f);
+	glVertex3f(xPos - 1.3f, bowTop + 0.15f, 0.0f);
+
+	// end of bow left
+	glVertex3f(xPos - 2.5f, bowTop - 0.8f, 0.0f);
+	glVertex3f(xPos - 2.6f, bowTop - 0.79f, 0.0f);
+	glVertex3f(xPos - 2.6f, bowTop - 0.81f, 0.0f);
+	glVertex3f(xPos - 2.48f, bowTop - 0.82f, 0.0f);
+
+	glVertex3f(xPos - 2.6f, bowTop - 0.79f, 0.0f);
+	glVertex3f(xPos - 2.7f, bowTop - 0.65f, 0.0f);
+	glVertex3f(xPos - 2.8f, bowTop - 0.75f, 0.0f);
+	glVertex3f(xPos - 2.6f, bowTop - 0.81f, 0.0f);
+
+
+	// mirror
+	glVertex3f(xPos + 0.2f, bowTop, 0.0f);
+	glVertex3f(xPos + 0.5f, bowTop + 0.2f, 0.0f);
+	glVertex3f(xPos + 0.6f, bowTop + 0.1f, 0.0f);
+	glVertex3f(xPos + 0.3f, bowTop - 0.1, 0.0f);
+
+	glVertex3f(xPos + 0.5f, bowTop + 0.2f, 0.0f);
+	glVertex3f(xPos + 0.7f, bowTop + 0.4f, 0.0f);
+	glVertex3f(xPos + 0.8f, bowTop + 0.2, 0.0f);
+	glVertex3f(xPos + 0.6f, bowTop + 0.1f, 0.0f);
+
+	glVertex3f(xPos + 0.7f, bowTop + 0.4f, 0.0f);
+	glVertex3f(xPos + 0.8f, bowTop + 0.5f, 0.0f);
+	glVertex3f(xPos + 0.9f, bowTop + 0.2f, 0.0f);
+	glVertex3f(xPos + 0.8f, bowTop + 0.2, 0.0f);
+
+	glVertex3f(xPos + 0.8f, bowTop + 0.5f, 0.0f);
+	glVertex3f(xPos + 1.1f, bowTop + 0.5f, 0.0f);
+	glVertex3f(xPos + 1.0f, bowTop + 0.2f, 0.0f);
+	glVertex3f(xPos + 0.9f, bowTop + 0.2f, 0.0f);
+
+	glVertex3f(xPos + 1.3f, bowTop + 0.47f, 0.0f);
+	glVertex3f(xPos + 1.1f, bowTop + 0.5f, 0.0f);
+	glVertex3f(xPos + 1.0f, bowTop + 0.2f, 0.0f);
+	glVertex3f(xPos + 1.1f, bowTop + 0.2f, 0.0f);
+
+	glVertex3f(xPos + 1.3f, bowTop + 0.47f, 0.0f);
+	glVertex3f(xPos + 1.5f, bowTop + 0.30f, 0.0f);
+	glVertex3f(xPos + 1.3f, bowTop + 0.15f, 0.0f);
+	glVertex3f(xPos + 1.1f, bowTop + 0.2f, 0.0f);
+
+	glVertex3f(xPos + 1.5f, bowTop + 0.30f, 0.0f);
+	glVertex3f(xPos + 2.5f, bowTop - 0.8f, 0.0f);
+	glVertex3f(xPos + 2.48f, bowTop - 0.82f, 0.0f);
+	glVertex3f(xPos + 1.3f, bowTop + 0.15f, 0.0f);
+
+	// end of bow right
+	glVertex3f(xPos + 2.5f, bowTop - 0.8f, 0.0f);
+	glVertex3f(xPos + 2.6f, bowTop - 0.79f, 0.0f);
+	glVertex3f(xPos + 2.6f, bowTop - 0.81f, 0.0f);
+	glVertex3f(xPos + 2.48f, bowTop - 0.82f, 0.0f);
+
+	glVertex3f(xPos + 2.6f, bowTop - 0.79f, 0.0f);
+	glVertex3f(xPos + 2.7f, bowTop - 0.65f, 0.0f);
+	glVertex3f(xPos + 2.8f, bowTop - 0.75f, 0.0f);
+	glVertex3f(xPos + 2.6f, bowTop - 0.81f, 0.0f);
+
+	glEnd();
+
+	// Bow string
+	glBegin(GL_LINES);
+	glVertex3f(xPos - 2.5f, bowTop - 0.8f, 0.0f);
+	glVertex3f(xPos, strMidY, 0.0f);
+	glVertex3f(xPos, strMidY, 0.0f);
+	glVertex3f(xPos + 2.5f, bowTop - 0.8f, 0.0f);
+	glEnd();
+}
