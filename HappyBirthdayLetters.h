@@ -72,14 +72,15 @@ GLfloat Y2_Translate_Y = -0.3f;
 
 
 
-void H1(void)
+
+void H1(GLfloat xPos, GLfloat yPos)
 {
 	//H1
-	glLoadIdentity();
-	gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+	//glLoadIdentity();
+	//gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 
-	glTranslatef(H1_Translate_X, H1_Translate_Y, 0.0f);
-	glScalef(AllLettersSize_X, AllLettersSize_Y, 0.0f);
+	//glTranslatef(H1_Translate_X, H1_Translate_Y, 0.0f);
+	//glScalef(AllLettersSize_X, AllLettersSize_Y, 0.0f);
 
 	glLineWidth(10.0f);	
 
@@ -87,25 +88,25 @@ void H1(void)
 
 	glColor3f(MidColor_R, MidColor_G, MidColor_B);    //MidColor
 
-	glVertex3f(-0.1f, 0.0f, 0.0f);
+	glVertex3f(xPos - 0.1f,yPos + 0.0f, 0.0f);
 
-	glVertex3f(0.1f, 0.0f, 0.0f);
-
-	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
-
-	glVertex3f(-0.1f, 0.2f, 0.0f);
-
-	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
-
-	glVertex3f(-0.1f, -0.2f, 0.0f);
+	glVertex3f(xPos + 0.1f,yPos + 0.0f, 0.0f);
 
 	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
 
-	glVertex3f(0.1f, 0.2f, 0.0f);
+	glVertex3f(xPos - 0.1f,yPos+ 0.2f, 0.0f);
 
 	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
 
-	glVertex3f(0.1f, -0.2f, 0.0f);	
+	glVertex3f(xPos -0.1f, yPos -0.2f, 0.0f);
+
+	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
+
+	glVertex3f(xPos + 0.1f, yPos + 0.2f, 0.0f);
+
+	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
+
+	glVertex3f(xPos + 0.1f,yPos -0.2f, 0.0f);
 
 	glEnd();
 }
@@ -114,11 +115,11 @@ void H1(void)
 void A1(void)
 {
 	//A1
-	glLoadIdentity();
-	gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+	//glLoadIdentity();
+	//gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 
-	glTranslatef(A1_Translate_X, A1_Translate_Y, 0.0f);
-	glScalef(AllLettersSize_X, AllLettersSize_Y, 0.0f);
+	//glTranslatef(A1_Translate_X, A1_Translate_Y, 0.0f);
+	//glScalef(AllLettersSize_X, AllLettersSize_Y, 0.0f);
 
 	glLineWidth(10.0f);
 

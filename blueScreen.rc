@@ -1,2 +1,4 @@
 #include "blueScreen.h"
 MYICON ICON sync.ico
+BALLOON_POP_SOUND WAVE balloonPop.wav
+BG_TRACK WAVE bgmusic.wav

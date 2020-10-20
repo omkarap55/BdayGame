@@ -4,14 +4,17 @@
 #include<math.h>
 #include <vector>
 //change 
+
+
 #include<gl/glu.h>
 #include "blueScreen.h"
-
+#include "HappyBirthdayLetters.h"
 #define WIN_WIDTH 800
 #define WIN_HEIGHT 600
 #define PI 3.14159265
 #pragma comment(lib,"opengl32.lib")
 #pragma comment(lib,"glu32.lib")
+#pragma comment(lib,"winmm.lib")
 using namespace std;
 struct Position {
 	GLfloat x,y;
@@ -53,11 +56,14 @@ GLfloat gBulletRadius = 0.08f / 2;
 
 GLfloat leftSideLimit = 0.0f;
 GLfloat rightSideLimit = 0.0f;
-GLfloat gPlayerSpeed = 0.0008f * 100;
+GLfloat gPlayerSpeed = 0.0006f * 100;
 GLfloat gBulletSpeed = 0.1 * gPlayerSpeed;
-GLfloat gEnemyJetSpeed = 0.01 * gPlayerSpeed;
+GLfloat gEnemyJetSpeed = 0.9* 0.01 * gPlayerSpeed;
+GLfloat gFinalLetterSpeed = 1.2 * gEnemyJetSpeed;
 int windowX = 0;
 int windowY = 0;
+
+
 //GLfloat angle = 0.0f;
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int iCmdShow) {
 	void initialize(void);
@@ -66,6 +72,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
 	WNDCLASSEX wndclass;
 	HWND hwnd;
 	MSG msg;
+	PlaySound(MAKEINTRESOURCE(BG_TRACK), NULL, SND_RESOURCE | SND_ASYNC );
 	if (fopen_s(&gPFile, "log_omi.txt", "w") != 0) {
 		MessageBox(NULL, TEXT("Cannot Open Desired File"), TEXT("File Alert"), MB_OK);
 		exit(0);
@@ -322,11 +329,16 @@ void Display(void) {
 	void drawBullet(GLfloat, GLfloat);
 	void drawEnemyJet(GLfloat, GLfloat);
 	void drawAircraft2(GLfloat, GLfloat);
+	void H1(GLfloat, GLfloat);
+	
+	void A1(void);
+
 	glClear(GL_COLOR_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	glTranslatef(0.0f, 0.0f, -6.0f);
-	
+	//H1();
+	//A1();
 	if (!gBullets.empty()) {
 		for (int i = 0; i < gBullets.size(); i++) {
 			drawBullet(gBullets[i].position.x, gBullets[i].position.y);
@@ -335,6 +347,10 @@ void Display(void) {
 	if (!gEnemyJets.empty()) {
 		for (int i = 0; i < gEnemyJets.size(); i++) {
 			drawEnemyJet(gEnemyJets[i].position.x, gEnemyJets[i].position.y);
+			glTranslatef(0.0f, -0.5f, 0.0f);
+			H1(gEnemyJets[i].position.x, gEnemyJets[i].position.y);
+			//H1(0.0f, 0.0f);
+			glTranslatef(0.0f, 0.5f, 0.0f);
 		}
 	}
 	drawAircraft2(gPlayer.position.x, gPlayer.position.y);
@@ -369,8 +385,10 @@ void update(void) {
 	for (int jetIndex = 0; jetIndex < gEnemyJets.size(); ++jetIndex) {
 		for (int bulletIndex = 0; bulletIndex < gBullets.size(); ++bulletIndex) {
 			if (checkCollision(gEnemyJets[jetIndex].position, gBullets[bulletIndex].position)) {
+				PlaySound(MAKEINTRESOURCE(BALLOON_POP_SOUND), NULL, SND_RESOURCE | SND_ASYNC);
 				gBullets.erase(gBullets.begin() + bulletIndex);
 				gEnemyJets.erase(gEnemyJets.begin() + jetIndex);
+				gEnemyJetSpeed = 0.1 * gFinalLetterSpeed;
 			}
 		}
 	}
