@@ -82,7 +82,7 @@ struct Color {
 	}
 	glEnd();
 }*/
-
+//-0.65
 void drawBalloon(float translatePosition[]){
 	// function declarations
 	//void drawHollowCircle(Color col, const float radius, float translatePosition[]);
@@ -151,7 +151,7 @@ void drawBalloon(float translatePosition[]){
 	}
 	glEnd();
 
-	glTranslatef(-translatePosition[0], -(translatePosition[1] - 0.15f), -translatePosition[2]);
+	//glTranslatef(-translatePosition[0], -(translatePosition[1] - 0.15f), -translatePosition[2]);
 	/*for (int i = 0; i < topCircleNoOfCircles; i++)
 	{
 		drawHollowCircle({ 1.0f - i / (float)topCircleNoOfCircles, 0.4f, 0.5f }, topCircleRadius += incrementRadius, translatePosition);
@@ -169,18 +169,20 @@ void drawBalloon(float translatePosition[]){
 	}*/
 
 	// Triangle
-	/*glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-	glTranslatef(translatePosition[0], translatePosition[1] - 0.15f, translatePosition[2]);
+	//glMatrixMode(GL_MODELVIEW);
+	//glLoadIdentity();
+	//glTranslatef(translatePosition[0], translatePosition[1] - 0.15f, translatePosition[2]);
 	glBegin(GL_TRIANGLES);
 	{
 		glColor3f(0.980392f, 0.4f, 0.501961f);
-		//glColor3f(1.0f, 1.0f, 1.0f);
+		glColor3f(1.0f, 1.0f, 1.0f);
 		glVertex3f((GLfloat)0.0f, (GLfloat)bottomTriangle_Y, 0.0f);
 
 		glColor3f(0.780392f, 0.2f, 0.301961f);
 		glVertex3f((GLfloat)-bottomTriangle_X, (GLfloat)(bottomTriangle_Y - bottomTriangleHeight), 0.0f);
 		glVertex3f((GLfloat)(bottomTriangle_X), (GLfloat)(bottomTriangle_Y - bottomTriangleHeight), 0.0f);
 	}
-	glEnd();*/
+	glEnd();
+
+	glTranslatef(-translatePosition[0], -(translatePosition[1] - 0.15f), -translatePosition[2]);
 }

@@ -9,6 +9,7 @@
 #include<gl/glu.h>
 #include "blueScreen.h"
 #include "HappyBirthdayLetters.h"
+#include "balloon.h"
 #define WIN_WIDTH 800
 #define WIN_HEIGHT 600
 #define PI 3.14159265
@@ -19,9 +20,10 @@ using namespace std;
 struct Position {
 	GLfloat x,y;
 };
+/*
 struct Color {
 	GLfloat r, g, b;
-};
+};*/
 struct Bullet {
 	Position position;
 };
@@ -342,10 +344,12 @@ void Display(void) {
 	void DrawBow(GLfloat, GLfloat);
 	void A1(void);
 	void H1(GLfloat, GLfloat);
+	void drawBalloon(float[]);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	glTranslatef(0.0f, 0.0f, -10.0f);
+
 	//H1();
 	//A1();
 	if (!gBullets.empty()) {
@@ -357,9 +361,11 @@ void Display(void) {
 	if (!gEnemyJets.empty()) {
 		for (int i = 0; i < gEnemyJets.size(); i++) {
 			//drawEnemyJet(gEnemyJets[i].position.x, gEnemyJets[i].position.y);
-			drawBullet(gEnemyJets[i].position.x, gEnemyJets[i].position.y);
+			//drawBullet(gEnemyJets[i].position.x, gEnemyJets[i].position.y);
+			float balloonPosition[3] = { gEnemyJets[i].position.x, gEnemyJets[i].position.y, 0.0f};
+			drawBalloon(balloonPosition);
 			glTranslatef(0.0f, -1.0f, 0.0f);
-			H1(gEnemyJets[i].position.x, gEnemyJets[i].position.y);
+			//H1(gEnemyJets[i].position.x, gEnemyJets[i].position.y);
 			//H1(0.0f, 0.0f);
 			glTranslatef(0.0f, 1.0f, 0.0f);
 		}
@@ -446,7 +452,7 @@ void uninitialize(void) {
 bool checkCollision(Position jetPosition, Position bulletPosition) {
 	bool checkXCollision(GLfloat, GLfloat);
 	bool checkYCollision(GLfloat, GLfloat);
-	if (checkXCollision(jetPosition.x, bulletPosition.x) && checkYCollision(jetPosition.y, bulletPosition.y)) {
+	if (checkXCollision(jetPosition.x, bulletPosition.x) && checkYCollision(jetPosition.y -1.25, bulletPosition.y)) {
 
 		return true;
 	}
