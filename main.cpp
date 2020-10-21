@@ -52,8 +52,8 @@ HGLRC ghrc = NULL;
 GLfloat angle = 0.0f;
 
 
-GLfloat gBulletRadius = 0.08f / 2;
-
+//GLfloat gBulletRadius = 0.08f / 2;
+GLfloat gBulletRadius = 0.5f;
 GLfloat leftSideLimit = 0.0f;
 GLfloat rightSideLimit = 0.0f;
 GLfloat gPlayerSpeed = 0.0006f * 100;
@@ -356,11 +356,12 @@ void Display(void) {
 	}
 	if (!gEnemyJets.empty()) {
 		for (int i = 0; i < gEnemyJets.size(); i++) {
-			drawEnemyJet(gEnemyJets[i].position.x, gEnemyJets[i].position.y);
-			glTranslatef(0.0f, -0.5f, 0.0f);
+			//drawEnemyJet(gEnemyJets[i].position.x, gEnemyJets[i].position.y);
+			drawBullet(gEnemyJets[i].position.x, gEnemyJets[i].position.y);
+			glTranslatef(0.0f, -1.0f, 0.0f);
 			H1(gEnemyJets[i].position.x, gEnemyJets[i].position.y);
 			//H1(0.0f, 0.0f);
-			glTranslatef(0.0f, 0.5f, 0.0f);
+			glTranslatef(0.0f, 1.0f, 0.0f);
 		}
 	}
 	//drawAircraft2(gPlayer.position.x, gPlayer.position.y);
