@@ -406,8 +406,9 @@ void update(void) {
 	}
 	if (gEnemyJets.size() == 0) {
 		Jet tempJet;
-		GLfloat randXpos = -1 + static_cast <GLfloat> (rand()) / (static_cast <GLfloat> (RAND_MAX / (1 - (-1))));
-		tempJet.position.x = randXpos;
+		
+		GLfloat xPosBalloon = 0.0f;
+		tempJet.position.x = xPosBalloon;
 		tempJet.position.y = 4.0f;
 		gEnemyJets.push_back(tempJet);
 	}
