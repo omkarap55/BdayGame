@@ -185,12 +185,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam) {
 		case VK_LEFT:
 			gPlayer.position.x = gPlayer.position.x - gPlayerSpeed;
 			break;
-		case VK_UP:
-			gPlayer.position.y = gPlayer.position.y + gPlayerSpeed;
-			break;
-		case VK_DOWN:
-			gPlayer.position.y = gPlayer.position.y - gPlayerSpeed;
-			break;
+		
 		case VK_ESCAPE:
 			DestroyWindow(hwnd);
 			break;
@@ -404,7 +399,7 @@ void update(void) {
 				PlaySound(MAKEINTRESOURCE(BALLOON_POP_SOUND), NULL, SND_RESOURCE | SND_ASYNC);
 				gBullets.erase(gBullets.begin() + bulletIndex);
 				gEnemyJets.erase(gEnemyJets.begin() + jetIndex);
-				gEnemyJetSpeed = 0.1 * gFinalLetterSpeed;
+				//gEnemyJetSpeed = 0.1 * gFinalLetterSpeed;
 			}
 		}
 	}
@@ -470,8 +465,9 @@ bool checkYCollision(GLfloat jetY, GLfloat bulletY) {
 	return false;
 }
 void initPlayer() {
+	//GLfloat ballReflectorXPos = 0.0f;
 	GLfloat ballReflectorXPos = 0.0f;
-	GLfloat ballReflectorYPos = -1.0f;
+	GLfloat ballReflectorYPos = -3.0f;
 	gPlayer.position.x = ballReflectorXPos;
 	gPlayer.position.y = ballReflectorYPos;
 }
