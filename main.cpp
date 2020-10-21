@@ -341,7 +341,7 @@ void Display(void) {
 	void DrawArrow(GLfloat, GLfloat);
 	void DrawBow(GLfloat, GLfloat);
 	void A1(void);
-
+	void H1(GLfloat, GLfloat);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
