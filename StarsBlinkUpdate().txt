@@ -12,67 +12,200 @@ void Update(void)
 	{
 	case 0:
 
-		if (StarColor_R > 0.06f)
+		//small
+
+		if (SmallStarColor_R > 0.06f)
 		{
-			StarColor_R -= BlinkSpeed;
+			SmallStarColor_R -= BlinkSpeed;
 		}
 		else
 		{
-			StarColor_R = 0.06f;
+			SmallStarColor_R = 0.06f;
 		}
 
 
-		if (StarColor_G > 0.1f)
+		if (SmallStarColor_G > 0.1f)
 		{
-			StarColor_G -= BlinkSpeed;
-		}
-		else
-		{
-			StarColor_G = 0.1f;
-		}
-
-
-		if (StarColor_B > 0.18f)
-		{
-			StarColor_B -= BlinkSpeed;
+			SmallStarColor_G -= BlinkSpeed;
 		}
 		else
 		{
-			StarColor_B = 0.18f;
+			SmallStarColor_G = 0.1f;
+		}
+
+
+		if (SmallStarColor_B > 0.18f)
+		{
+			SmallStarColor_B -= BlinkSpeed;
+		}
+		else
+		{
+			SmallStarColor_B = 0.18f;
 			blink++;
 		}
+
+		//mid
+
+		if (MidStarColor_R < 1.0f)
+		{
+			MidStarColor_R += BlinkSpeed;
+		}
+		else
+		{
+			MidStarColor_R = 1.0f;
+		}
+
+
+		if (MidStarColor_G < 1.0f)
+		{
+			MidStarColor_G += BlinkSpeed;
+		}
+		else
+		{
+			MidStarColor_G = 1.0f;
+		}
+
+
+		if (MidStarColor_B < 1.0f)
+		{
+			MidStarColor_B += BlinkSpeed;
+		}
+		else
+		{
+			MidStarColor_B = 1.0f;
+		}
+		
+
+		//big
+
+		if (BigStarColor_R > 0.06f)
+		{
+			BigStarColor_R -= BlinkSpeed;
+		}
+		else
+		{
+			BigStarColor_R = 0.06f;
+		}
+
+
+		if (BigStarColor_G > 0.1f)
+		{
+			BigStarColor_G -= BlinkSpeed;
+		}
+		else
+		{
+			BigStarColor_G = 0.1f;
+		}
+
+
+		if (BigStarColor_B > 0.18f)
+		{
+			BigStarColor_B -= BlinkSpeed;
+		}
+		else
+		{
+			BigStarColor_B = 0.18f;
+			
+		}
+
 		break;
 
 
 	case 1:
-		if (StarColor_R < 1.0f)
+
+		//small 
+
+		if (SmallStarColor_R < 1.0f)
 		{
-			StarColor_R += BlinkSpeed;
+			SmallStarColor_R += BlinkSpeed;
 		}
 		else
 		{
-			StarColor_R = 1.0f;
+			SmallStarColor_R = 1.0f;
 		}
 
 
-		if (StarColor_G < 1.0f)
+		if (SmallStarColor_G < 1.0f)
 		{
-			StarColor_G += BlinkSpeed;
-		}
-		else
-		{
-			StarColor_G = 1.0f;
-		}
-
-
-		if (StarColor_B < 1.0f)
-		{
-			StarColor_B += BlinkSpeed;
+			SmallStarColor_G += BlinkSpeed;
 		}
 		else
 		{
-			StarColor_B = 1.0f;
+			SmallStarColor_G = 1.0f;
+		}
+
+
+		if (SmallStarColor_B < 1.0f)
+		{
+			SmallStarColor_B += BlinkSpeed;
+		}
+		else
+		{
+			SmallStarColor_B = 1.0f;
 			blink--;
+		}
+		
+
+
+		//mid
+		if (MidStarColor_R > 0.06f)
+		{
+			MidStarColor_R -= BlinkSpeed;
+		}
+		else
+		{
+			MidStarColor_R = 0.06f;
+		}
+
+
+		if (MidStarColor_G > 0.1f)
+		{
+			MidStarColor_G -= BlinkSpeed;
+		}
+		else
+		{
+			MidStarColor_G = 0.1f;
+		}
+
+
+		if (MidStarColor_B > 0.18f)
+		{
+			MidStarColor_B -= BlinkSpeed;
+		}
+		else
+		{
+			MidStarColor_B = 0.18f;
+			
+		}
+
+		//big
+		if (BigStarColor_R < 1.0f)
+		{
+			BigStarColor_R += BlinkSpeed;
+		}
+		else
+		{
+			BigStarColor_R = 1.0f;
+		}
+
+
+		if (BigStarColor_G < 1.0f)
+		{
+			BigStarColor_G += BlinkSpeed;
+		}
+		else
+		{
+			BigStarColor_G = 1.0f;
+		}
+
+
+		if (BigStarColor_B < 1.0f)
+		{
+			BigStarColor_B += BlinkSpeed;
+		}
+		else
+		{
+			BigStarColor_B = 1.0f;
 		}
 		break;
 
