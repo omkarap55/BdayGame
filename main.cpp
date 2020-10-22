@@ -31,6 +31,7 @@ struct Bullet {
 };
 struct Jet {
 	Position position;
+	bool isVisible = true;
 };
 
 struct Player {
@@ -46,7 +47,7 @@ struct Letter_Information {
 
 };
 vector<Bullet> gBullets;
-vector<Jet> gEnemyJets;
+Jet gEnemyJets[13];
 Player gPlayer;
 Bounds bounds_enemyJet = { -1.0f,1.0f };
 
@@ -69,11 +70,15 @@ GLfloat rightSideLimit = 0.0f;
 GLfloat gPlayerSpeed = 0.0006f * 100;
 GLfloat gBulletSpeed = 0.1 * gPlayerSpeed;
 GLfloat gEnemyJetSpeed = 0.9* 0.01 * gPlayerSpeed;
-GLfloat gFinalLetterSpeed = 1.2 * gEnemyJetSpeed;
+GLfloat gInitialLetterSpeed = -gEnemyJetSpeed;
+GLfloat gFinalLetterSpeed = gInitialLetterSpeed * 1.3f;
+GLfloat gCurrentLetterSpeed = 0.0f;
+int gActiveLetterIndex = 0;
+//GLfloat gFinalLetterSpeed = 1.2 * gEnemyJetSpeed;
 int windowX = 0;
 int windowY = 0;
 bool gbStretch = false;
-
+bool gbShowBalloon = true;
 //GLfloat angle = 0.0f;
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int iCmdShow) {
 	void initialize(void);
@@ -170,8 +175,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam) {
 		//SetCursorPos(windowX + WIN_WIDTH / 2, windowY + 1.5 *WIN_HEIGHT / 2);
 		
 		initPlayer();
-		initEnemyJets();
 		initLetters();
+		initEnemyJets();
+		
 		break;
 	case WM_PAINT:
 		break;
@@ -342,9 +348,7 @@ void Resize(int width, int height) {
 void Display(void) {
 	
 	//code
-	//void drawBrick(GLfloat, GLfloat);
-	//void drawBall(GLfloat, GLfloat);
-	//void drawSideBorder(void);
+	
 	void drawBullet(GLfloat, GLfloat);
 	void drawEnemyJet(GLfloat, GLfloat);
 	void drawAircraft2(GLfloat, GLfloat);
@@ -361,33 +365,26 @@ void Display(void) {
 	glLoadIdentity();
 	glTranslatef(0.0f, 0.0f, -10.0f);
 	Background();
-	//H1(-4.5f,0.0f);
-	//0.7f
-	for (int i = 0; i < 13; i++) {
+	
+	for (int i = 0; i < gActiveLetterIndex; i++) {
 		showLetter(Letters[i].temp_x, Letters[i].temp_y, i);
 	}
-	//A1();
+	showLetter(Letters[gActiveLetterIndex].temp_x, Letters[gActiveLetterIndex].temp_y, gActiveLetterIndex);
+	
 	if (!gBullets.empty()) {
 		for (int i = 0; i < gBullets.size(); i++) {
-			//drawBullet(gBullets[i].position.x, gBullets[i].position.y);
+			
 			DrawArrow(gBullets[i].position.x, gBullets[i].position.y);
 		}
 	}
-	if (!gEnemyJets.empty()) {
-		for (int i = 0; i < gEnemyJets.size(); i++) {
-			//drawEnemyJet(gEnemyJets[i].position.x, gEnemyJets[i].position.y);
-			//drawBullet(gEnemyJets[i].position.x, gEnemyJets[i].position.y);
-			float balloonPosition[3] = { gEnemyJets[i].position.x, gEnemyJets[i].position.y, 0.0f};
-			drawBalloon(balloonPosition);
-			glTranslatef(0.0f, -1.0f, 0.0f);
-			//H1(gEnemyJets[i].position.x, gEnemyJets[i].position.y);
-			//H1(0.0f, 0.0f);
-			glTranslatef(0.0f, 1.0f, 0.0f);
+	if (gEnemyJets[gActiveLetterIndex].isVisible) {
+		float balloonPosition[3] = { gEnemyJets[gActiveLetterIndex].position.x, gEnemyJets[gActiveLetterIndex].position.y, 0.0f };
+		drawBalloon(balloonPosition);
 		}
-	}
-	//drawAircraft2(gPlayer.position.x, gPlayer.position.y);
+			
+
 	DrawBow(gPlayer.position.x, gPlayer.position.y);
-	//checkCollision(gBallXTranslation, gBallYTranslation);
+	
 	SwapBuffers(ghdc);
 }
 
@@ -411,28 +408,27 @@ void update(void) {
 	}
 
 	// animate enemyjets
-	for (int i = 0; i < gEnemyJets.size(); i++) {
-		gEnemyJets[i].position.y = gEnemyJets[i].position.y - gEnemyJetSpeed;
+
+		gEnemyJets[gActiveLetterIndex].position.y = gEnemyJets[gActiveLetterIndex].position.y - gEnemyJetSpeed;
+	
+
+	//animate letters
+	Letters[gActiveLetterIndex].temp_y = Letters[gActiveLetterIndex].temp_y + gCurrentLetterSpeed;
+	 if (Letters[gActiveLetterIndex].temp_y < 0.0f) {
+		gActiveLetterIndex++;
+		gCurrentLetterSpeed = gInitialLetterSpeed;
+		//Letters[gActiveLetterIndex].temp_y = 0.0f;
 	}
 	//check Bullet and enemyJet Collison
-	for (int jetIndex = 0; jetIndex < gEnemyJets.size(); ++jetIndex) {
+	
 		for (int bulletIndex = 0; bulletIndex < gBullets.size(); ++bulletIndex) {
-			if (checkCollision(gEnemyJets[jetIndex].position, gBullets[bulletIndex].position)) {
+			if (checkCollision(gEnemyJets[gActiveLetterIndex].position, gBullets[bulletIndex].position)) {
 				PlaySound(MAKEINTRESOURCE(BALLOON_POP_SOUND), NULL, SND_RESOURCE | SND_ASYNC);
 				gBullets.erase(gBullets.begin() + bulletIndex);
-				gEnemyJets.erase(gEnemyJets.begin() + jetIndex);
-				//gEnemyJetSpeed = 0.1 * gFinalLetterSpeed;
+				
 			}
 		}
-	}
-	if (gEnemyJets.size() == 0) {
-		Jet tempJet;
-		
-		GLfloat xPosBalloon = -4.5f;
-		tempJet.position.x = xPosBalloon;
-		tempJet.position.y = 4.0f;
-		gEnemyJets.push_back(tempJet);
-	}
+	
 }
 void uninitialize(void) {
 
@@ -469,6 +465,8 @@ bool checkCollision(Position jetPosition, Position bulletPosition) {
 	bool checkYCollision(GLfloat, GLfloat);
 	if (checkXCollision(jetPosition.x, bulletPosition.x) && checkYCollision(jetPosition.y -1.25, bulletPosition.y)) {
 
+		gCurrentLetterSpeed = gFinalLetterSpeed;
+		gEnemyJets[gActiveLetterIndex].isVisible = false;
 		return true;
 	}
 
@@ -495,11 +493,12 @@ void initPlayer() {
 	gPlayer.position.y = ballReflectorYPos;
 }
 void initEnemyJets() {
-	Jet tempJet;
-	tempJet.position.x = -4.5f;
-	tempJet.position.y = 5.0f;
-	gEnemyJets.push_back(tempJet);
-
+	
+	for (int i = 0; i < 13; i++) {
+		
+		gEnemyJets[i].position.x = Letters[i].temp_x;
+		gEnemyJets[i].position.y = 5.0f;
+	}
 }
 void drawBullet(GLfloat xPos, GLfloat yPos) {
 	GLfloat angleStep = PI / 10;
@@ -794,7 +793,8 @@ void initLetters() {
 			Letters[i].temp_x = -4.5f + i * 0.7f;
 		}
 		
-		Letters[i].temp_y = 0.0f;
+		Letters[i].temp_y = 3.0f;
+		gCurrentLetterSpeed = gInitialLetterSpeed;
 	}
 }
 
