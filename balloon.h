@@ -83,8 +83,20 @@ void drawBalloon(float translatePosition[]){
 		}
 	}
 	glEnd();
+	glLineWidth(1.0f);
+	glBegin(GL_LINES);
+	{
+		//glColor3f(0.980392f, 0.4f, 0.501961f);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f((GLfloat)(xPos), (GLfloat)yPos - gBulletRadius, 0.0f);
 
-	
+		//glColor3f(0.780392f, 0.2f, 0.301961f);
+		//glVertex3f((GLfloat)(xPos - 0.01f), (GLfloat)(yPos - gBulletRadius - 0.1), 0.0f);
+		//glVertex3f((GLfloat)(xPos - 0.01f), (GLfloat)(yPos - gBulletRadius - 0.1), 0.0f);
+		glVertex3f((GLfloat)(xPos), (GLfloat)(yPos - gBulletRadius - 0.5), 0.0f);
+	}
+	glEnd();
+
 	glBegin(GL_TRIANGLES);
 	{
 		glColor3f(gUOuterBalloon.r-0.1, gUOuterBalloon.g - 0.1, gUOuterBalloon.b - 0.1);
