@@ -131,11 +131,13 @@ void drawBalloon(float translatePosition[]){
 	{
 		float xPos = 0.0f, yPos = 0.1f, gBulletRadius = 0.5f;
 		for (GLfloat angle = 0.0f; angle <= 360.0f; angle = angle + angleStep) {
-			glColor3f(1.0f, 0.4f - angle / (float)topCircleNoOfCircles, 0.5f);
+			//glColor3f(1.0f, 0.4f - angle / (float)topCircleNoOfCircles, 0.5f);
+			glColor3f(0.6117f, 0.8627f, 1.0f);
 			glVertex3f(xPos + gBulletRadius * cosf(angle), yPos + gBulletRadius * sinf(angle), 0.0f);
 			//glColor3f(1.0f - angle / (float)topCircleNoOfCircles, 0.4f, 0.5f);
 			glVertex3f(xPos + 0.0f, yPos + 0.0f, 0.0f);
-			glColor3f(1.0f, 0.4f, 0.5f - angle / (float)topCircleNoOfCircles);
+			//glColor3f(1.0f, 0.4f, 0.5f - angle / (float)topCircleNoOfCircles);
+			glColor3f(0.6117f, 0.8627f, 1.0f);
 			glVertex3f(xPos + gBulletRadius * cosf((float)(angle + angleStep)), yPos + gBulletRadius * sinf((float)(angle + angleStep)), 0.0f);
 		}
 

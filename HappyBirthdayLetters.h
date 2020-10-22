@@ -8,7 +8,19 @@
 
 /*glColor3f()*/
 
-GLfloat TopColor_R = 0.15f;
+GLfloat TopColor_R = 0.9f;
+GLfloat TopColor_G = 0.5f;
+GLfloat TopColor_B = 0.0f;
+
+GLfloat MidColor_R = 0.94f;
+GLfloat MidColor_G = 0.72f;
+GLfloat MidColor_B = 0.43f;
+
+GLfloat BottomColor_R = 1.0f;
+GLfloat BottomColor_G = 1.0f;
+GLfloat BottomColor_B = 1.0f;
+
+/*GLfloat TopColor_R = 0.15f;
 GLfloat TopColor_G = 0.78f;
 GLfloat TopColor_B = 0.78f;
 
@@ -18,7 +30,7 @@ GLfloat MidColor_B = 0.9f;
 
 GLfloat BottomColor_R = 1.0f;
 GLfloat BottomColor_G = 1.0f;
-GLfloat BottomColor_B = 1.0f;
+GLfloat BottomColor_B = 1.0f;*/
 
 
 /*glScalef()*/

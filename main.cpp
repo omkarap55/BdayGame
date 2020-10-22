@@ -67,11 +67,11 @@ struct Letter_Information Letters[13];
 GLfloat gBulletRadius = 0.5f;
 GLfloat leftSideLimit = 0.0f;
 GLfloat rightSideLimit = 0.0f;
-GLfloat gPlayerSpeed = 0.0006f * 100;
+GLfloat gPlayerSpeed = 0.001f * 100;
 GLfloat gBulletSpeed = 0.1 * gPlayerSpeed;
 GLfloat gEnemyJetSpeed = 0.9* 0.01 * gPlayerSpeed;
 GLfloat gInitialLetterSpeed = -gEnemyJetSpeed;
-GLfloat gFinalLetterSpeed = gInitialLetterSpeed * 1.3f;
+GLfloat gFinalLetterSpeed = gInitialLetterSpeed * 2.0f;
 GLfloat gCurrentLetterSpeed = 0.0f;
 int gActiveLetterIndex = 0;
 //GLfloat gFinalLetterSpeed = 1.2 * gEnemyJetSpeed;
@@ -233,6 +233,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam) {
 
 	case WM_LBUTTONDOWN:
 		gbStretch = true;
+		PlaySound(MAKEINTRESOURCE(BOW_STRETCH), NULL, SND_RESOURCE | SND_ASYNC);
 		break;
 
 	case WM_LBUTTONUP:
@@ -382,7 +383,7 @@ void Display(void) {
 		drawBalloon(balloonPosition);
 		}
 			
-
+	glLineWidth(2.0f);
 	DrawBow(gPlayer.position.x, gPlayer.position.y);
 	
 	SwapBuffers(ghdc);
@@ -488,7 +489,7 @@ bool checkYCollision(GLfloat jetY, GLfloat bulletY) {
 void initPlayer() {
 	//GLfloat ballReflectorXPos = 0.0f;
 	GLfloat ballReflectorXPos = 0.0f;
-	GLfloat ballReflectorYPos = -3.0f;
+	GLfloat ballReflectorYPos = -2.5f;
 	gPlayer.position.x = ballReflectorXPos;
 	gPlayer.position.y = ballReflectorYPos;
 }
