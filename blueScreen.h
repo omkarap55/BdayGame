@@ -4,3 +4,4 @@
 #define BG_TRACK 103
 #define BOW_STRETCH 104
 #define ARROW_SWOOSH 105
+#define BDAY_TRACK 106

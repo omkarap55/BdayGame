@@ -80,6 +80,7 @@ int windowX = 0;
 int windowY = 0;
 bool gbStretch = false;
 bool gbShowBalloon = true;
+int playBdayMusic = 0;
 //GLfloat angle = 0.0f;
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int iCmdShow) {
 	void initialize(void);
@@ -88,7 +89,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
 	WNDCLASSEX wndclass;
 	HWND hwnd;
 	MSG msg;
-	PlaySound(MAKEINTRESOURCE(BG_TRACK), NULL, SND_RESOURCE | SND_ASYNC );
+	//PlaySound(MAKEINTRESOURCE(BG_TRACK), NULL, SND_RESOURCE | SND_ASYNC );
 	if (fopen_s(&gPFile, "log_omi.txt", "w") != 0) {
 		MessageBox(NULL, TEXT("Cannot Open Desired File"), TEXT("File Alert"), MB_OK);
 		exit(0);
@@ -375,6 +376,17 @@ void Display(void) {
 		//}
 		
 	}
+
+
+	if (gActiveLetterIndex == 13 && playBdayMusic ==0) {
+		playBdayMusic = 1;
+	}
+	if ( playBdayMusic ==1) {
+		
+		PlaySound(MAKEINTRESOURCE(BDAY_TRACK), NULL, SND_RESOURCE | SND_ASYNC);
+		playBdayMusic = 2;
+		//gActiveLetterIndex = -1;
+	}
 	if (gActiveLetterIndex < 13) {
 		showLetter(Letters[gActiveLetterIndex].temp_x, Letters[gActiveLetterIndex].temp_y, gActiveLetterIndex);
 	}
@@ -426,6 +438,7 @@ void update(void) {
 		Letters[gActiveLetterIndex].temp_y = Letters[gActiveLetterIndex].temp_y + gCurrentLetterSpeed;
 		if (Letters[gActiveLetterIndex].temp_y < 0.0f) {
 			gActiveLetterIndex++;
+
 			gCurrentLetterSpeed = gInitialLetterSpeed;
 			//Letters[gActiveLetterIndex].temp_y = 0.0f;
 		}
@@ -450,67 +463,200 @@ void update(void) {
 		{
 		case 0:
 
-			if (StarColor_R > 0.06f)
+			//small
+
+			if (SmallStarColor_R > 0.06f)
 			{
-				StarColor_R -= BlinkSpeed;
+				SmallStarColor_R -= BlinkSpeed;
 			}
 			else
 			{
-				StarColor_R = 0.06f;
+				SmallStarColor_R = 0.06f;
 			}
 
 
-			if (StarColor_G > 0.1f)
+			if (SmallStarColor_G > 0.1f)
 			{
-				StarColor_G -= BlinkSpeed;
-			}
-			else
-			{
-				StarColor_G = 0.1f;
-			}
-
-
-			if (StarColor_B > 0.18f)
-			{
-				StarColor_B -= BlinkSpeed;
+				SmallStarColor_G -= BlinkSpeed;
 			}
 			else
 			{
-				StarColor_B = 0.18f;
+				SmallStarColor_G = 0.1f;
+			}
+
+
+			if (SmallStarColor_B > 0.18f)
+			{
+				SmallStarColor_B -= BlinkSpeed;
+			}
+			else
+			{
+				SmallStarColor_B = 0.18f;
 				blink++;
 			}
+
+			//mid
+
+			if (MidStarColor_R < 1.0f)
+			{
+				MidStarColor_R += BlinkSpeed;
+			}
+			else
+			{
+				MidStarColor_R = 1.0f;
+			}
+
+
+			if (MidStarColor_G < 1.0f)
+			{
+				MidStarColor_G += BlinkSpeed;
+			}
+			else
+			{
+				MidStarColor_G = 1.0f;
+			}
+
+
+			if (MidStarColor_B < 1.0f)
+			{
+				MidStarColor_B += BlinkSpeed;
+			}
+			else
+			{
+				MidStarColor_B = 1.0f;
+			}
+
+
+			//big
+
+			if (BigStarColor_R > 0.06f)
+			{
+				BigStarColor_R -= BlinkSpeed;
+			}
+			else
+			{
+				BigStarColor_R = 0.06f;
+			}
+
+
+			if (BigStarColor_G > 0.1f)
+			{
+				BigStarColor_G -= BlinkSpeed;
+			}
+			else
+			{
+				BigStarColor_G = 0.1f;
+			}
+
+
+			if (BigStarColor_B > 0.18f)
+			{
+				BigStarColor_B -= BlinkSpeed;
+			}
+			else
+			{
+				BigStarColor_B = 0.18f;
+
+			}
+
 			break;
 
 
 		case 1:
-			if (StarColor_R < 1.0f)
+
+			//small 
+
+			if (SmallStarColor_R < 1.0f)
 			{
-				StarColor_R += BlinkSpeed;
+				SmallStarColor_R += BlinkSpeed;
 			}
 			else
 			{
-				StarColor_R = 1.0f;
+				SmallStarColor_R = 1.0f;
 			}
 
 
-			if (StarColor_G < 1.0f)
+			if (SmallStarColor_G < 1.0f)
 			{
-				StarColor_G += BlinkSpeed;
-			}
-			else
-			{
-				StarColor_G = 1.0f;
-			}
-
-
-			if (StarColor_B < 1.0f)
-			{
-				StarColor_B += BlinkSpeed;
+				SmallStarColor_G += BlinkSpeed;
 			}
 			else
 			{
-				StarColor_B = 1.0f;
+				SmallStarColor_G = 1.0f;
+			}
+
+
+			if (SmallStarColor_B < 1.0f)
+			{
+				SmallStarColor_B += BlinkSpeed;
+			}
+			else
+			{
+				SmallStarColor_B = 1.0f;
 				blink--;
+			}
+
+
+
+			//mid
+			if (MidStarColor_R > 0.06f)
+			{
+				MidStarColor_R -= BlinkSpeed;
+			}
+			else
+			{
+				MidStarColor_R = 0.06f;
+			}
+
+
+			if (MidStarColor_G > 0.1f)
+			{
+				MidStarColor_G -= BlinkSpeed;
+			}
+			else
+			{
+				MidStarColor_G = 0.1f;
+			}
+
+
+			if (MidStarColor_B > 0.18f)
+			{
+				MidStarColor_B -= BlinkSpeed;
+			}
+			else
+			{
+				MidStarColor_B = 0.18f;
+
+			}
+
+			//big
+			if (BigStarColor_R < 1.0f)
+			{
+				BigStarColor_R += BlinkSpeed;
+			}
+			else
+			{
+				BigStarColor_R = 1.0f;
+			}
+
+
+			if (BigStarColor_G < 1.0f)
+			{
+				BigStarColor_G += BlinkSpeed;
+			}
+			else
+			{
+				BigStarColor_G = 1.0f;
+			}
+
+
+			if (BigStarColor_B < 1.0f)
+			{
+				BigStarColor_B += BlinkSpeed;
+			}
+			else
+			{
+				BigStarColor_B = 1.0f;
 			}
 			break;
 

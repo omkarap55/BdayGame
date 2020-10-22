@@ -4,3 +4,4 @@ BALLOON_POP_SOUND WAVE balloonPop.wav
 BG_TRACK WAVE bgmusic.wav
 BOW_STRETCH WAVE bowStretch.wav
 ARROW_SWOOSH WAVE ArrowSwoosh.wav
+BDAY_TRACK WAVE Bday.wav
