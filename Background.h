@@ -2,9 +2,19 @@
 
 //variable declaration
 
-GLfloat StarColor_R = 1.0f;
-GLfloat StarColor_G = 1.0f;
-GLfloat StarColor_B = 1.0f;
+GLfloat SmallStarColor_R = 1.0f;
+GLfloat SmallStarColor_G = 1.0f;
+GLfloat SmallStarColor_B = 1.0f;
+
+GLfloat MidStarColor_R = 0.6f;
+GLfloat MidStarColor_G = 0.1f;
+GLfloat MidStarColor_B = 0.18f;
+
+GLfloat BigStarColor_R = 1.0f;
+GLfloat BigStarColor_G = 1.0f;
+GLfloat BigStarColor_B = 1.0f;
+
+
 
 
 void Background(void)
@@ -35,7 +45,7 @@ void Background(void)
 
 	glBegin(GL_POINTS);
 
-	glColor3f(StarColor_R, StarColor_G, StarColor_B);
+	glColor3f(SmallStarColor_R, SmallStarColor_G, SmallStarColor_B);
 
 	glVertex3f(0.0f, 0.0f, 0.0f);
 	glVertex3f(0.9f, 0.1f, 0.0f);
@@ -231,7 +241,7 @@ void Background(void)
 
 	glBegin(GL_POINTS);
 
-	glColor3f(StarColor_R, StarColor_G, StarColor_B);
+	glColor3f(MidStarColor_R, MidStarColor_G, MidStarColor_B);
 
 	glVertex3f(1.0f, 1.0f, 0.0f);
 	glVertex3f(0.5f, 2.0f, 0.0f);
@@ -264,7 +274,7 @@ void Background(void)
 
 	glBegin(GL_POINTS);
 
-	glColor3f(StarColor_R, StarColor_G, StarColor_B);
+	glColor3f(BigStarColor_R, BigStarColor_G, BigStarColor_B);
 
 	glVertex3f(-7.0f, 0.0f, 0.0f);
 	glVertex3f(-5.5f, 4.0f, 0.0f);
