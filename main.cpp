@@ -10,6 +10,8 @@
 #include "blueScreen.h"
 #include "HappyBirthdayLetters.h"
 #include "balloon.h"
+#include "Background.h"
+//#include "ShowLetter.h"
 #define WIN_WIDTH 800
 #define WIN_HEIGHT 600
 #define PI 3.14159265
@@ -37,6 +39,12 @@ struct Player {
 struct Bounds {
 	GLfloat lower, upper;
 };
+struct Letter_Information {
+
+	GLfloat temp_x;
+	GLfloat temp_y;
+
+};
 vector<Bullet> gBullets;
 vector<Jet> gEnemyJets;
 Player gPlayer;
@@ -52,7 +60,7 @@ HWND ghwnd = NULL;
 HDC ghdc = NULL;
 HGLRC ghrc = NULL;
 GLfloat angle = 0.0f;
-
+struct Letter_Information Letters[13];
 
 //GLfloat gBulletRadius = 0.08f / 2;
 GLfloat gBulletRadius = 0.5f;
@@ -151,6 +159,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam) {
 	//void initBall(void);
 	void initPlayer(void);
 	void initEnemyJets(void);
+	void initLetters(void);
 	int xPos = 0;
 	int yPos = 0;
 	static int prevXPos = -1;
@@ -162,7 +171,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam) {
 		
 		initPlayer();
 		initEnemyJets();
-	
+		initLetters();
 		break;
 	case WM_PAINT:
 		break;
@@ -345,12 +354,18 @@ void Display(void) {
 	void A1(void);
 	void H1(GLfloat, GLfloat);
 	void drawBalloon(float[]);
+	void Background(void);
+	void showLetter(GLfloat, GLfloat, int);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	glTranslatef(0.0f, 0.0f, -10.0f);
-
-	//H1();
+	Background();
+	//H1(-4.5f,0.0f);
+	//0.7f
+	for (int i = 0; i < 13; i++) {
+		showLetter(Letters[i].temp_x, Letters[i].temp_y, i);
+	}
 	//A1();
 	if (!gBullets.empty()) {
 		for (int i = 0; i < gBullets.size(); i++) {
@@ -413,7 +428,7 @@ void update(void) {
 	if (gEnemyJets.size() == 0) {
 		Jet tempJet;
 		
-		GLfloat xPosBalloon = 0.0f;
+		GLfloat xPosBalloon = -4.5f;
 		tempJet.position.x = xPosBalloon;
 		tempJet.position.y = 4.0f;
 		gEnemyJets.push_back(tempJet);
@@ -481,8 +496,8 @@ void initPlayer() {
 }
 void initEnemyJets() {
 	Jet tempJet;
-	tempJet.position.x = 0.0f;
-	tempJet.position.y = 4.0f;
+	tempJet.position.x = -4.5f;
+	tempJet.position.y = 5.0f;
 	gEnemyJets.push_back(tempJet);
 
 }
@@ -764,4 +779,81 @@ void DrawBow(GLfloat xPos, GLfloat yPos)
 
 	if (gbStretch)
 		DrawArrow(xPos, yPos);
+}
+
+void drawLetters(GLfloat, GLfloat, int index) {
+
+}
+
+void initLetters() {
+	for (int i = 0; i < 13; i++) {
+		if (i > 4) {
+			Letters[i].temp_x = -4.5f + i * 0.7f + 0.7f;
+		}
+		else {
+			Letters[i].temp_x = -4.5f + i * 0.7f;
+		}
+		
+		Letters[i].temp_y = 0.0f;
+	}
+}
+
+void showLetter(GLfloat x, GLfloat y, int Index) {
+
+	switch (Index) {
+
+	case 0:
+		H1(x,y);
+			break;
+
+	case 1:
+		A1(x, y);
+		break;
+
+	case 2:
+		P1(x, y);
+		break;
+
+	case 3:
+		P2(x, y);
+		break;
+
+	case 4:
+		Y1(x, y);
+		break;
+
+	case 5:
+		B(x, y);
+		break;
+
+	case 6:
+		I(x, y);
+		break;
+
+	case 7:
+		R(x, y);
+		break;
+
+	case 8:
+		T(x, y);
+		break;
+
+	case 9:
+		H2(x, y);
+		break;
+
+	case 10:
+		D(x, y);
+		break;
+
+	case 11:
+		A2(x, y);
+		break;
+
+	case 12:
+		Y1(x, y);
+		break;
+
+	}
+
 }
