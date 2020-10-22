@@ -73,6 +73,7 @@ GLfloat gEnemyJetSpeed = 0.9* 0.01 * gPlayerSpeed;
 GLfloat gInitialLetterSpeed = -gEnemyJetSpeed;
 GLfloat gFinalLetterSpeed = gInitialLetterSpeed * 2.0f;
 GLfloat gCurrentLetterSpeed = 0.0f;
+GLfloat BlinkSpeed = 0.002f;
 int gActiveLetterIndex = 0;
 //GLfloat gFinalLetterSpeed = 1.2 * gEnemyJetSpeed;
 int windowX = 0;
@@ -369,9 +370,15 @@ void Display(void) {
 	Background();
 	
 	for (int i = 0; i < gActiveLetterIndex; i++) {
-		showLetter(Letters[i].temp_x, Letters[i].temp_y, i);
+		//if (gActiveLetterIndex < 13) {
+			showLetter(Letters[i].temp_x, Letters[i].temp_y, i);
+		//}
+		
 	}
-	showLetter(Letters[gActiveLetterIndex].temp_x, Letters[gActiveLetterIndex].temp_y, gActiveLetterIndex);
+	if (gActiveLetterIndex < 13) {
+		showLetter(Letters[gActiveLetterIndex].temp_x, Letters[gActiveLetterIndex].temp_y, gActiveLetterIndex);
+	}
+	
 	
 	if (!gBullets.empty()) {
 		for (int i = 0; i < gBullets.size(); i++) {
@@ -379,13 +386,17 @@ void Display(void) {
 			DrawArrow(gBullets[i].position.x, gBullets[i].position.y);
 		}
 	}
-	if (gEnemyJets[gActiveLetterIndex].isVisible) {
+
+	if (gActiveLetterIndex<13 && gEnemyJets[gActiveLetterIndex].isVisible) {
 		float balloonPosition[3] = { gEnemyJets[gActiveLetterIndex].position.x, gEnemyJets[gActiveLetterIndex].position.y, 0.0f };
 		drawBalloon(balloonPosition);
 		}
 			
 	glLineWidth(2.0f);
-	DrawBow(gPlayer.position.x, gPlayer.position.y);
+	if (gActiveLetterIndex < 13) {
+		DrawBow(gPlayer.position.x, gPlayer.position.y);
+	}
+	
 	
 	SwapBuffers(ghdc);
 }
@@ -410,17 +421,20 @@ void update(void) {
 	}
 
 	// animate enemyjets
-
+	if (gActiveLetterIndex < 13) {
 		gEnemyJets[gActiveLetterIndex].position.y = gEnemyJets[gActiveLetterIndex].position.y - gEnemyJetSpeed;
+		Letters[gActiveLetterIndex].temp_y = Letters[gActiveLetterIndex].temp_y + gCurrentLetterSpeed;
+		if (Letters[gActiveLetterIndex].temp_y < 0.0f) {
+			gActiveLetterIndex++;
+			gCurrentLetterSpeed = gInitialLetterSpeed;
+			//Letters[gActiveLetterIndex].temp_y = 0.0f;
+		}
+	}
+	
 	
 
 	//animate letters
-	Letters[gActiveLetterIndex].temp_y = Letters[gActiveLetterIndex].temp_y + gCurrentLetterSpeed;
-	 if (Letters[gActiveLetterIndex].temp_y < 0.0f) {
-		gActiveLetterIndex++;
-		gCurrentLetterSpeed = gInitialLetterSpeed;
-		//Letters[gActiveLetterIndex].temp_y = 0.0f;
-	}
+
 	//check Bullet and enemyJet Collison
 	
 		for (int bulletIndex = 0; bulletIndex < gBullets.size(); ++bulletIndex) {
@@ -429,6 +443,77 @@ void update(void) {
 				gBullets.erase(gBullets.begin() + bulletIndex);
 				
 			}
+		}
+		static int blink = 0;
+
+		switch (blink)
+		{
+		case 0:
+
+			if (StarColor_R > 0.06f)
+			{
+				StarColor_R -= BlinkSpeed;
+			}
+			else
+			{
+				StarColor_R = 0.06f;
+			}
+
+
+			if (StarColor_G > 0.1f)
+			{
+				StarColor_G -= BlinkSpeed;
+			}
+			else
+			{
+				StarColor_G = 0.1f;
+			}
+
+
+			if (StarColor_B > 0.18f)
+			{
+				StarColor_B -= BlinkSpeed;
+			}
+			else
+			{
+				StarColor_B = 0.18f;
+				blink++;
+			}
+			break;
+
+
+		case 1:
+			if (StarColor_R < 1.0f)
+			{
+				StarColor_R += BlinkSpeed;
+			}
+			else
+			{
+				StarColor_R = 1.0f;
+			}
+
+
+			if (StarColor_G < 1.0f)
+			{
+				StarColor_G += BlinkSpeed;
+			}
+			else
+			{
+				StarColor_G = 1.0f;
+			}
+
+
+			if (StarColor_B < 1.0f)
+			{
+				StarColor_B += BlinkSpeed;
+			}
+			else
+			{
+				StarColor_B = 1.0f;
+				blink--;
+			}
+			break;
+
 		}
 	
 }
