@@ -237,6 +237,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam) {
 		break;
 
 	case WM_LBUTTONUP:
+		PlaySound(MAKEINTRESOURCE(ARROW_SWOOSH), NULL, SND_RESOURCE | SND_ASYNC);
 		Bullet tempBullet;
 		tempBullet.position.x = gPlayer.position.x;
 		tempBullet.position.y = gPlayer.position.y;
