@@ -437,6 +437,7 @@ void update(void) {
 		gEnemyJets[gActiveLetterIndex].position.y = gEnemyJets[gActiveLetterIndex].position.y - gEnemyJetSpeed;
 		Letters[gActiveLetterIndex].temp_y = Letters[gActiveLetterIndex].temp_y + gCurrentLetterSpeed;
 		if (Letters[gActiveLetterIndex].temp_y < 0.0f) {
+			Letters[gActiveLetterIndex].temp_y = 0.0f;
 			gActiveLetterIndex++;
 
 			gCurrentLetterSpeed = gInitialLetterSpeed;
@@ -889,7 +890,7 @@ void DrawBow(GLfloat xPos, GLfloat yPos)
 
 	// stretchString position
 	if (gbStretch)
-		strMidY = (-0.8f-0.2 )/ 2.8f;
+		strMidY = (-0.8f-0.4 )/ 2.8f;
 
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
