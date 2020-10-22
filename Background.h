@@ -1,5 +1,12 @@
 #pragma once
 
+//variable declaration
+
+GLfloat StarColor_R = 1.0f;
+GLfloat StarColor_G = 1.0f;
+GLfloat StarColor_B = 1.0f;
+
+
 void Background(void)
 {
 
@@ -28,7 +35,7 @@ void Background(void)
 
 	glBegin(GL_POINTS);
 
-	glColor3f(1.0f, 1.0f, 1.0f);
+	glColor3f(StarColor_R, StarColor_G, StarColor_B);
 
 	glVertex3f(0.0f, 0.0f, 0.0f);
 	glVertex3f(0.9f, 0.1f, 0.0f);
@@ -224,7 +231,7 @@ void Background(void)
 
 	glBegin(GL_POINTS);
 
-	glColor3f(1.0f, 1.0f, 1.0f);
+	glColor3f(StarColor_R, StarColor_G, StarColor_B);
 
 	glVertex3f(1.0f, 1.0f, 0.0f);
 	glVertex3f(0.5f, 2.0f, 0.0f);
@@ -257,7 +264,7 @@ void Background(void)
 
 	glBegin(GL_POINTS);
 
-	glColor3f(1.0f, 1.0f, 1.0f);
+	glColor3f(StarColor_R, StarColor_G, StarColor_B);
 
 	glVertex3f(-7.0f, 0.0f, 0.0f);
 	glVertex3f(-5.5f, 4.0f, 0.0f);

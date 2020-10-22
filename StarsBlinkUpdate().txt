@@ -1,0 +1,81 @@
+//global variable declaration
+GLfloat BlinkSpeed = 0.02f;
+
+
+void Update(void)
+{
+	//code
+
+	static int blink = 0;
+
+	switch (blink)
+	{
+	case 0:
+
+		if (StarColor_R > 0.06f)
+		{
+			StarColor_R -= BlinkSpeed;
+		}
+		else
+		{
+			StarColor_R = 0.06f;
+		}
+
+
+		if (StarColor_G > 0.1f)
+		{
+			StarColor_G -= BlinkSpeed;
+		}
+		else
+		{
+			StarColor_G = 0.1f;
+		}
+
+
+		if (StarColor_B > 0.18f)
+		{
+			StarColor_B -= BlinkSpeed;
+		}
+		else
+		{
+			StarColor_B = 0.18f;
+			blink++;
+		}
+		break;
+
+
+	case 1:
+		if (StarColor_R < 1.0f)
+		{
+			StarColor_R += BlinkSpeed;
+		}
+		else
+		{
+			StarColor_R = 1.0f;
+		}
+
+
+		if (StarColor_G < 1.0f)
+		{
+			StarColor_G += BlinkSpeed;
+		}
+		else
+		{
+			StarColor_G = 1.0f;
+		}
+
+
+		if (StarColor_B < 1.0f)
+		{
+			StarColor_B += BlinkSpeed;
+		}
+		else
+		{
+			StarColor_B = 1.0f;
+			blink--;
+		}
+		break;
+
+	}
+
+}
