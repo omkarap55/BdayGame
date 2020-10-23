@@ -8,7 +8,31 @@
 
 /*glColor3f()*/
 
-GLfloat TopColor_R = 0.15f;
+GLfloat TopColor_R = 0.95f;
+GLfloat TopColor_G = 0.77f;
+GLfloat TopColor_B = 0.2f;
+
+GLfloat MidColor_R = 0.97f;
+GLfloat MidColor_G = 0.87f;
+GLfloat MidColor_B = 0.56f;
+
+GLfloat BottomColor_R = 1.0f;
+GLfloat BottomColor_G = 1.0f;
+GLfloat BottomColor_B = 1.0f;
+
+/*GLfloat TopColor_R = 0.9f;
+GLfloat TopColor_G = 0.5f;
+GLfloat TopColor_B = 0.0f;
+
+GLfloat MidColor_R = 0.94f;
+GLfloat MidColor_G = 0.72f;
+GLfloat MidColor_B = 0.43f;
+
+GLfloat BottomColor_R = 1.0f;
+GLfloat BottomColor_G = 1.0f;
+GLfloat BottomColor_B = 1.0f;*/
+
+/*GLfloat TopColor_R = 0.15f;
 GLfloat TopColor_G = 0.78f;
 GLfloat TopColor_B = 0.78f;
 
@@ -18,7 +42,7 @@ GLfloat MidColor_B = 0.9f;
 
 GLfloat BottomColor_R = 1.0f;
 GLfloat BottomColor_G = 1.0f;
-GLfloat BottomColor_B = 1.0f;
+GLfloat BottomColor_B = 1.0f;*/
 
 
 /*glScalef()*/
@@ -69,147 +93,150 @@ GLfloat A2_Translate_Y = -0.3f;
 
 GLfloat Y2_Translate_X = 1.05f;
 GLfloat Y2_Translate_Y = -0.3f;
+GLfloat alphaScaleFactor = 1.4141f;
 
 
 
-void H1(void)
+void H1(GLfloat xPos, GLfloat yPos)
 {
 	//H1
-	glLoadIdentity();
-	gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+	//glLoadIdentity();
+	//gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 
-	glTranslatef(H1_Translate_X, H1_Translate_Y, 0.0f);
-	glScalef(AllLettersSize_X, AllLettersSize_Y, 0.0f);
+	glTranslatef(xPos, yPos, 0.0f);
+	//glScalef(AllLettersSize_X, AllLettersSize_Y, 0.0f);
 
 	glLineWidth(10.0f);	
-
 	glBegin(GL_LINES);
 
 	glColor3f(MidColor_R, MidColor_G, MidColor_B);    //MidColor
 
-	glVertex3f(-0.1f, 0.0f, 0.0f);
+	glVertex3f(- 0.1f * alphaScaleFactor, 0.0f * alphaScaleFactor, 0.0f);
 
-	glVertex3f(0.1f, 0.0f, 0.0f);
-
-	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
-
-	glVertex3f(-0.1f, 0.2f, 0.0f);
-
-	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
-
-	glVertex3f(-0.1f, -0.2f, 0.0f);
+	glVertex3f( 0.1f * alphaScaleFactor, 0.0f * alphaScaleFactor, 0.0f);
 
 	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
 
-	glVertex3f(0.1f, 0.2f, 0.0f);
+	glVertex3f( - 0.1f * alphaScaleFactor, 0.2f * alphaScaleFactor, 0.0f);
 
 	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
 
-	glVertex3f(0.1f, -0.2f, 0.0f);	
+	glVertex3f( -0.1f * alphaScaleFactor,  -0.2f * alphaScaleFactor, 0.0f);
+
+	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
+
+	glVertex3f( 0.1f * alphaScaleFactor,  0.2f * alphaScaleFactor, 0.0f);
+
+	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
+
+	glVertex3f( 0.1f * alphaScaleFactor, -0.2f * alphaScaleFactor, 0.0f);
 
 	glEnd();
+	glTranslatef(-xPos, -yPos, 0.0f);
 }
 
 
-void A1(void)
+void A1(GLfloat xPos, GLfloat yPos)
 {
 	//A1
-	glLoadIdentity();
-	gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+	//glLoadIdentity();
+	//gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 
-	glTranslatef(A1_Translate_X, A1_Translate_Y, 0.0f);
-	glScalef(AllLettersSize_X, AllLettersSize_Y, 0.0f);
-
+	//glTranslatef(A1_Translate_X, A1_Translate_Y, 0.0f);
+	//glScalef(AllLettersSize_X, AllLettersSize_Y, 0.0f);
+	glTranslatef(xPos, yPos, 0.0f);
 	glLineWidth(10.0f);
 
 	glBegin(GL_LINES);
 
 	glColor3f(MidColor_R, MidColor_G, MidColor_B);    //MidColor
 
-	glVertex3f(-0.05f, 0.0f, 0.0f);
+	glVertex3f(-0.05f * alphaScaleFactor, 0.0f * alphaScaleFactor, 0.0f);
 
-	glVertex3f(0.05f, 0.0f, 0.0f);
-
-	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
-
-	glVertex3f(0.0f, 0.2f, 0.0f);
-
-	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
-
-	glVertex3f(-0.1f, -0.2f, 0.0f);
+	glVertex3f(0.05f * alphaScaleFactor, 0.0f * alphaScaleFactor, 0.0f);
 
 	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
 
-	glVertex3f(0.0f, 0.2f, 0.0f);
+	glVertex3f(0.0f * alphaScaleFactor, 0.2f * alphaScaleFactor, 0.0f);
 
 	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
 
-	glVertex3f(0.1f, -0.2f, 0.0f);
+	glVertex3f(-0.1f * alphaScaleFactor, -0.2f * alphaScaleFactor, 0.0f);
+
+	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
+
+	glVertex3f(0.0f * alphaScaleFactor, 0.2f * alphaScaleFactor, 0.0f);
+
+	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
+
+	glVertex3f(0.1f * alphaScaleFactor, -0.2f * alphaScaleFactor, 0.0f);
 
 	glEnd();
+	glTranslatef(-xPos, -yPos, 0.0f);
 }
 
 
-void P1(void)
+void P1(GLfloat xPos, GLfloat yPos)
 {
 	//P1
-	glLoadIdentity();
-	gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+	//glLoadIdentity();
+	//gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 
-	glTranslatef(P1_Translate_X, P1_Translate_Y, 0.0f);
-	glScalef(AllLettersSize_X, AllLettersSize_Y, 0.0f);
-
+	glTranslatef(xPos, yPos, 0.0f);
+	//glScalef(AllLettersSize_X, AllLettersSize_Y, 1.0f);
+	//glScalef(2.0f, 2.0f, 1.0f);
 	glLineWidth(10.0f);
 
 	glBegin(GL_LINES);
 
 	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
 
-	glVertex3f(-0.1f, 0.185f, 0.0f);
+	glVertex3f(-0.1f * alphaScaleFactor, 0.185f * alphaScaleFactor, 0.0f);
 
-	glVertex3f(0.07f, 0.185f, 0.0f);
-
-	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
-
-	glVertex3f(0.06f, 0.195f, 0.0f);
-
-	glVertex3f(0.1f, 0.15f, 0.0f);
+	glVertex3f(0.07f * alphaScaleFactor, 0.185f * alphaScaleFactor, 0.0f);
 
 	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
 
-	glVertex3f(-0.1f, 0.2f, 0.0f);
+	glVertex3f(0.06f * alphaScaleFactor, 0.195f * alphaScaleFactor, 0.0f);
+
+	glVertex3f(0.1f * alphaScaleFactor, 0.15f * alphaScaleFactor, 0.0f);
+
+	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
+
+	glVertex3f(-0.1f * alphaScaleFactor, 0.2f * alphaScaleFactor, 0.0f);
 
 	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
 
-	glVertex3f(-0.1f, -0.2f, 0.0f);
+	glVertex3f(-0.1f * alphaScaleFactor, -0.2f * alphaScaleFactor, 0.0f);
 
 	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
 
-	glVertex3f(0.1f, 0.15f, 0.0f);
+	glVertex3f(0.1f * alphaScaleFactor, 0.15f * alphaScaleFactor, 0.0f);
 
 	glColor3f(MidColor_R, MidColor_G, MidColor_B);    //MidColor
 
-	glVertex3f(0.1f, 0.0f, 0.0f);
+	glVertex3f(0.1f * alphaScaleFactor, 0.0f * alphaScaleFactor, 0.0f);
 
 	glColor3f(MidColor_R, MidColor_G, MidColor_B);    //MidColor
 
-	glVertex3f(-0.1f, 0.0f, 0.0f);
+	glVertex3f(-0.1f * alphaScaleFactor, 0.0f * alphaScaleFactor, 0.0f);
 
-	glVertex3f(0.112f, 0.0f, 0.0f);
+	glVertex3f(0.112f * alphaScaleFactor, 0.0f * alphaScaleFactor, 0.0f);
 
 	glEnd();
-
+	//glScalef(1/AllLettersSize_X, 1/AllLettersSize_Y, 1.0f);
+	glTranslatef(-xPos, -yPos, 0.0f);
 }
 
 
-void P2(void)
+void P2(GLfloat xPos, GLfloat yPos)
 {
 	//P2
-	glLoadIdentity();
-	gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+	//glLoadIdentity();
+	//gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 
-	glTranslatef(P2_Translate_X, P2_Translate_Y, 0.0f);
-	glScalef(AllLettersSize_X, AllLettersSize_Y, 0.0f);
+	glTranslatef(xPos, yPos, 0.0f);
+	//glScalef(AllLettersSize_X, AllLettersSize_Y, 0.0f);
 
 	glLineWidth(10.0f);
 
@@ -217,95 +244,93 @@ void P2(void)
 
 	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
 
-	glVertex3f(-0.1f, 0.185f, 0.0f);
+	glVertex3f(-0.1f * alphaScaleFactor, 0.185f * alphaScaleFactor, 0.0f);
 
-	glVertex3f(0.07f, 0.185f, 0.0f);
-
-	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
-
-	glVertex3f(0.06f, 0.195f, 0.0f);
-
-	glVertex3f(0.1f, 0.15f, 0.0f);
+	glVertex3f(0.07f * alphaScaleFactor, 0.185f * alphaScaleFactor, 0.0f);
 
 	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
 
-	glVertex3f(-0.1f, 0.2f, 0.0f);
+	glVertex3f(0.06f * alphaScaleFactor, 0.195f * alphaScaleFactor, 0.0f);
+
+	glVertex3f(0.1f * alphaScaleFactor, 0.15f * alphaScaleFactor, 0.0f);
+
+	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
+
+	glVertex3f(-0.1f * alphaScaleFactor, 0.2f * alphaScaleFactor, 0.0f);
 
 	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
 
-	glVertex3f(-0.1f, -0.2f, 0.0f);
+	glVertex3f(-0.1f * alphaScaleFactor, -0.2f * alphaScaleFactor, 0.0f);
 
 	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
 
-	glVertex3f(0.1f, 0.15f, 0.0f);
+	glVertex3f(0.1f * alphaScaleFactor, 0.15f * alphaScaleFactor, 0.0f);
 
 	glColor3f(MidColor_R, MidColor_G, MidColor_B);    //MidColor
 
-	glVertex3f(0.1f, 0.0f, 0.0f);
+	glVertex3f(0.1f * alphaScaleFactor, 0.0f * alphaScaleFactor, 0.0f);
 
 	glColor3f(MidColor_R, MidColor_G, MidColor_B);    //MidColor
 
-	glVertex3f(-0.1f, 0.0f, 0.0f);
+	glVertex3f(-0.1f * alphaScaleFactor, 0.0f * alphaScaleFactor, 0.0f);
 
-	glVertex3f(0.112f, 0.0f, 0.0f);
+	glVertex3f(0.112f * alphaScaleFactor, 0.0f * alphaScaleFactor, 0.0f);
 
 	glEnd();
-
+	glTranslatef(-xPos, -yPos, 0.0f);
 }
 
 
-void Y1(void)
+void Y1(GLfloat xPos, GLfloat yPos)
 {
 	//Y1
-	glLoadIdentity();
-	gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+	//glLoadIdentity();
+	//gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 
-	glTranslatef(Y1_Translate_X, Y1_Translate_Y, 0.0f);
-	glScalef(AllLettersSize_X, AllLettersSize_Y, 0.0f);
-
+	glTranslatef(xPos, yPos, 0.0f);
+	//glScalef(AllLettersSize_X, AllLettersSize_Y, 0.0f);
 	glLineWidth(10.0f);
 
 	glBegin(GL_LINES);
 
-	
+	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
+
+	glVertex3f(-0.1f * alphaScaleFactor, 0.2f * alphaScaleFactor, 0.0f);
+
+	glColor3f(MidColor_R, MidColor_G, MidColor_B);    //MidColor
+
+	glVertex3f(0.0f * alphaScaleFactor, 0.0f * alphaScaleFactor, 0.0f);
 
 	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
 
-	glVertex3f(-0.1f, 0.2f, 0.0f);
+	glVertex3f(0.1f * alphaScaleFactor, 0.2f * alphaScaleFactor, 0.0f);
 
 	glColor3f(MidColor_R, MidColor_G, MidColor_B);    //MidColor
 
-	glVertex3f(0.0f, 0.0f, 0.0f);
-
-	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
-
-	glVertex3f(0.1f, 0.2f, 0.0f);
+	glVertex3f(0.0f * alphaScaleFactor, 0.0f * alphaScaleFactor, 0.0f);
 
 	glColor3f(MidColor_R, MidColor_G, MidColor_B);    //MidColor
 
-	glVertex3f(0.0f, 0.0f, 0.0f);
-
-	glColor3f(MidColor_R, MidColor_G, MidColor_B);    //MidColor
-
-	glVertex3f(0.0f, 0.0f, 0.0f);
+	glVertex3f(0.0f * alphaScaleFactor, 0.0f * alphaScaleFactor, 0.0f);
 
 	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
 
-	glVertex3f(0.0f, -0.2f, 0.0f);
-
+	glVertex3f(0.0f * alphaScaleFactor, -0.2f * alphaScaleFactor, 0.0f);
 
 	glEnd();
+	glTranslatef(-xPos, -yPos, 0.0f);
+
 }
 
 
-void B(void)
+void B(GLfloat xPos, GLfloat yPos)
 {
 	//B
-	glLoadIdentity();
-	gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
-
-	glTranslatef(B_Translate_X, B_Translate_Y, 0.0f);
-	glScalef(AllLettersSize_X, AllLettersSize_Y, 0.0f);
+	//glLoadIdentity();
+	//gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+	glTranslatef(xPos, yPos, 0.0f);
+	//glTranslatef(B_Translate_X, B_Translate_Y, 0.0f);
+	//glScalef(AllLettersSize_X, AllLettersSize_Y, 0.0f);
 
 	glLineWidth(10.0f);
 
@@ -313,93 +338,85 @@ void B(void)
 
 	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
 
-	glVertex3f(-0.1f, 0.185f, 0.0f);
+	glVertex3f(-0.1f * alphaScaleFactor, 0.185f * alphaScaleFactor, 0.0f);
 
-	glVertex3f(0.07f, 0.185f, 0.0f);
-
-	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
-
-	glVertex3f(0.06f, 0.195f, 0.0f);
-
-	glVertex3f(0.1f, 0.15f, 0.0f);
-
-
-	glColor3f(MidColor_R, MidColor_G, MidColor_B);    //MidColor
-
-	glVertex3f(0.1f, 0.045f, 0.0f);
-
-	glVertex3f(0.07f, 0.01f, 0.0f);
-
-
-	
+	glVertex3f(0.07f * alphaScaleFactor, 0.185f * alphaScaleFactor, 0.0f);
 
 	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
 
-	glVertex3f(0.1f, 0.15f, 0.0f);
+	glVertex3f(0.06f * alphaScaleFactor, 0.195f * alphaScaleFactor, 0.0f);
+
+	glVertex3f(0.1f * alphaScaleFactor, 0.15f * alphaScaleFactor, 0.0f);
+
 
 	glColor3f(MidColor_R, MidColor_G, MidColor_B);    //MidColor
 
-	glVertex3f(0.1f, 0.045f, 0.0f);
+	glVertex3f(0.1f * alphaScaleFactor, 0.045f * alphaScaleFactor, 0.0f);
 
-	
+	glVertex3f(0.07f * alphaScaleFactor, 0.01f * alphaScaleFactor, 0.0f);
 
+	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
+
+	glVertex3f(0.1f * alphaScaleFactor, 0.15f * alphaScaleFactor, 0.0f);
+
+	glColor3f(MidColor_R, MidColor_G, MidColor_B);    //MidColor
+
+	glVertex3f(0.1f * alphaScaleFactor, 0.045f * alphaScaleFactor, 0.0f);
 
 	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
 
-	glVertex3f(-0.1f, -0.185f, 0.0f);
+	glVertex3f(-0.1f * alphaScaleFactor, -0.185f * alphaScaleFactor, 0.0f);
 
-	glVertex3f(0.07f, -0.185f, 0.0f);
-
-	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
-
-	glVertex3f(0.06f, -0.195f, 0.0f);
-
-	glVertex3f(0.1f, -0.15f, 0.0f);
-
+	glVertex3f(0.07f * alphaScaleFactor, -0.185f * alphaScaleFactor, 0.0f);
 
 	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
 
-	glVertex3f(0.1f, -0.15f, 0.0f);
+	glVertex3f(0.06f * alphaScaleFactor, -0.195f * alphaScaleFactor, 0.0f);
+
+	glVertex3f(0.1f * alphaScaleFactor, -0.15f * alphaScaleFactor, 0.0f);
+
+	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
+
+	glVertex3f(0.1f * alphaScaleFactor, -0.15f * alphaScaleFactor, 0.0f);
 
 	glColor3f(MidColor_R, MidColor_G, MidColor_B);    //MidColor
 
-	glVertex3f(0.1f, -0.045f, 0.0f);
+	glVertex3f(0.1f * alphaScaleFactor, -0.045f * alphaScaleFactor, 0.0f);
 
 	glColor3f(MidColor_R, MidColor_G, MidColor_B);    //MidColor
 
-	glVertex3f(-0.1f, 0.0f, 0.0f);
+	glVertex3f(-0.1f * alphaScaleFactor, 0.0f * alphaScaleFactor, 0.0f);
 
-	glVertex3f(0.08f, 0.0f, 0.0f);
+	glVertex3f(0.08f * alphaScaleFactor, 0.0f * alphaScaleFactor, 0.0f);
 
 
 	glColor3f(MidColor_R, MidColor_G, MidColor_B);    //MidColor
 
-	glVertex3f(0.1f, -0.045f, 0.0f);
+	glVertex3f(0.1f * alphaScaleFactor, -0.045f * alphaScaleFactor, 0.0f);
 
-	glVertex3f(0.07f, -0.01f, 0.0f);
+	glVertex3f(0.07f * alphaScaleFactor, -0.01f * alphaScaleFactor, 0.0f);
 
 
 	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
 
-	glVertex3f(-0.1f, 0.2f, 0.0f);
+	glVertex3f(-0.1f * alphaScaleFactor, 0.2f * alphaScaleFactor, 0.0f);
 
 	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
 
-	glVertex3f(-0.1f, -0.2f, 0.0f);
-
+	glVertex3f(-0.1f * alphaScaleFactor, -0.2f * alphaScaleFactor, 0.0f);
 	glEnd();
-
+	glTranslatef(-xPos, -yPos, 0.0f);
 }
 
 
-void I(void)
+void I(GLfloat xPos, GLfloat yPos)
 {
 	//I
-	glLoadIdentity();
-	gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+	//glLoadIdentity();
+	//gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 
-	glTranslatef(I_Translate_X, I_Translate_Y, 0.0f);
-	glScalef(AllLettersSize_X, AllLettersSize_Y, 0.0f);
+	glTranslatef(xPos, yPos, 0.0f);
+	//glScalef(AllLettersSize_X, AllLettersSize_Y, 0.0f);
 
 	glLineWidth(10.0f);
 
@@ -407,38 +424,39 @@ void I(void)
 
 	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
 
-	glVertex3f(0.0f, 0.185f, 0.0f);
+	glVertex3f(0.0f * alphaScaleFactor, 0.185f * alphaScaleFactor, 0.0f);
 
 	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
 
-	glVertex3f(0.0f, -0.185f, 0.0f);
+	glVertex3f(0.0f * alphaScaleFactor, -0.185f * alphaScaleFactor, 0.0f);
 
 	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
 
-	glVertex3f(-0.1f, 0.185f, 0.0f);
+	glVertex3f(-0.1f * alphaScaleFactor, 0.185f * alphaScaleFactor, 0.0f);
 
-	glVertex3f(0.1f, 0.185f, 0.0f);
-
-	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
-
-	glVertex3f(-0.1f, -0.185f, 0.0f);
+	glVertex3f(0.1f * alphaScaleFactor, 0.185f * alphaScaleFactor, 0.0f);
 
 	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
 
-	glVertex3f(0.1f, -0.185f, 0.0f);
+	glVertex3f(-0.1f * alphaScaleFactor, -0.185f * alphaScaleFactor, 0.0f);
+
+	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
+
+	glVertex3f(0.1f * alphaScaleFactor, -0.185f * alphaScaleFactor, 0.0f);
 
 	glEnd();
+	glTranslatef(-xPos, -yPos, 0.0f);
 }
 
 
-void R(void)
+void R(GLfloat xPos, GLfloat yPos)
 {
 	//R
-	glLoadIdentity();
-	gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+	//glLoadIdentity();
+	//gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 
-	glTranslatef(R_Translate_X, R_Translate_Y, 0.0f);
-	glScalef(AllLettersSize_X, AllLettersSize_Y, 0.0f);
+	glTranslatef(xPos, yPos, 0.0f);
+	//glScalef(AllLettersSize_X, AllLettersSize_Y, 0.0f);
 
 	glLineWidth(10.0f);
 
@@ -446,60 +464,59 @@ void R(void)
 
 	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
 
-	glVertex3f(-0.1f, 0.185f, 0.0f);
+	glVertex3f(-0.1f * alphaScaleFactor, 0.185f * alphaScaleFactor, 0.0f);
 
-	glVertex3f(0.07f, 0.185f, 0.0f);
-
-	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
-
-	glVertex3f(0.06f, 0.195f, 0.0f);
-
-	glVertex3f(0.1f, 0.15f, 0.0f);
+	glVertex3f(0.07f * alphaScaleFactor, 0.185f * alphaScaleFactor, 0.0f);
 
 	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
 
-	glVertex3f(-0.1f, 0.2f, 0.0f);
+	glVertex3f(0.06f * alphaScaleFactor, 0.195f * alphaScaleFactor, 0.0f);
+
+	glVertex3f(0.1f * alphaScaleFactor, 0.15f * alphaScaleFactor, 0.0f);
+
+	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
+
+	glVertex3f(-0.1f * alphaScaleFactor, 0.2f * alphaScaleFactor, 0.0f);
 
 	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
 
-	glVertex3f(-0.1f, -0.2f, 0.0f);
+	glVertex3f(-0.1f * alphaScaleFactor, -0.2f * alphaScaleFactor, 0.0f);
 
 	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
 
-	glVertex3f(0.1f, 0.15f, 0.0f);
+	glVertex3f(0.1f * alphaScaleFactor, 0.15f * alphaScaleFactor, 0.0f);
 
 	glColor3f(MidColor_R, MidColor_G, MidColor_B);    //MidColor
 
-	glVertex3f(0.1f, 0.0f, 0.0f);
+	glVertex3f(0.1f * alphaScaleFactor, 0.0f * alphaScaleFactor, 0.0f);
 
 	glColor3f(MidColor_R, MidColor_G, MidColor_B);    //MidColor
 
-	glVertex3f(-0.1f, 0.0f, 0.0f);
+	glVertex3f(-0.1f * alphaScaleFactor, 0.0f * alphaScaleFactor, 0.0f);
 
-	glVertex3f(0.112f, 0.0f, 0.0f);
+	glVertex3f(0.112f * alphaScaleFactor, 0.0f * alphaScaleFactor, 0.0f);
 
 	glColor3f(MidColor_R, MidColor_G, MidColor_B);    //MidColor
 
-	glVertex3f(-0.1f, 0.0f, 0.0f);
+	glVertex3f(-0.1f * alphaScaleFactor, 0.0f * alphaScaleFactor, 0.0f);
 
 	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
 
-	glVertex3f(0.110f, -0.19f, 0.0f);
-
+	glVertex3f(0.110f * alphaScaleFactor, -0.19f * alphaScaleFactor, 0.0f);
 
 	glEnd();
-
+	glTranslatef(-xPos, -yPos, 0.0f);
 }
 
 
-void T(void)
+void T(GLfloat xPos, GLfloat yPos)
 {
 	//T
-	glLoadIdentity();
-	gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+	//glLoadIdentity();
+	//gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 
-	glTranslatef(T_Translate_X, T_Translate_Y, 0.0f);
-	glScalef(AllLettersSize_X, AllLettersSize_Y, 0.0f);
+	glTranslatef(xPos, yPos, 0.0f);
+	//glScalef(AllLettersSize_X, AllLettersSize_Y, 0.0f);
 
 	glLineWidth(10.0f);
 
@@ -507,31 +524,31 @@ void T(void)
 
 	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
 
-	glVertex3f(0.0f, 0.185f, 0.0f);
+	glVertex3f(0.0f * alphaScaleFactor, 0.185f * alphaScaleFactor, 0.0f);
 
 	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
 
-	glVertex3f(0.0f, -0.2f, 0.0f);
+	glVertex3f(0.0f * alphaScaleFactor, -0.2f * alphaScaleFactor, 0.0f);
 
 	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
 
-	glVertex3f(-0.1f, 0.185f, 0.0f);
+	glVertex3f(-0.1f * alphaScaleFactor, 0.185f * alphaScaleFactor, 0.0f);
 
-	glVertex3f(0.1f, 0.185f, 0.0f);
+	glVertex3f(0.1f * alphaScaleFactor, 0.185f * alphaScaleFactor, 0.0f);
 
-	
 	glEnd();
+	glTranslatef(-xPos, -yPos, 0.0f);
 }
 
 
-void H2(void)
+void H2(GLfloat xPos, GLfloat yPos)
 {
 	//H2
-	glLoadIdentity();
-	gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+	//glLoadIdentity();
+	//gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 
-	glTranslatef(H2_Translate_X, H2_Translate_Y, 0.0f);
-	glScalef(AllLettersSize_X, AllLettersSize_Y, 0.0f);
+	glTranslatef(xPos, yPos, 0.0f);
+	//glScalef(AllLettersSize_X, AllLettersSize_Y, 0.0f);
 
 	glLineWidth(10.0f);
 
@@ -539,38 +556,39 @@ void H2(void)
 
 	glColor3f(MidColor_R, MidColor_G, MidColor_B);    //MidColor
 
-	glVertex3f(-0.1f, 0.0f, 0.0f);
+	glVertex3f(-0.1f * alphaScaleFactor, 0.0f * alphaScaleFactor, 0.0f);
 
-	glVertex3f(0.1f, 0.0f, 0.0f);
-
-	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
-
-	glVertex3f(-0.1f, 0.2f, 0.0f);
-
-	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
-
-	glVertex3f(-0.1f, -0.2f, 0.0f);
+	glVertex3f(0.1f * alphaScaleFactor, 0.0f * alphaScaleFactor, 0.0f);
 
 	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
 
-	glVertex3f(0.1f, 0.2f, 0.0f);
+	glVertex3f(-0.1f * alphaScaleFactor, 0.2f * alphaScaleFactor, 0.0f);
 
 	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
 
-	glVertex3f(0.1f, -0.2f, 0.0f);
+	glVertex3f(-0.1f * alphaScaleFactor, -0.2f * alphaScaleFactor, 0.0f);
+
+	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
+
+	glVertex3f(0.1f * alphaScaleFactor, 0.2f * alphaScaleFactor, 0.0f);
+
+	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
+
+	glVertex3f(0.1f * alphaScaleFactor, -0.2f * alphaScaleFactor, 0.0f);
 
 	glEnd();
+	glTranslatef(-xPos, -yPos, 0.0f);
 }
 
 
-void D(void)
+void D(GLfloat xPos, GLfloat yPos)
 {
 	//D
-	glLoadIdentity();
-	gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+	//glLoadIdentity();
+	//gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 
-	glTranslatef(D_Translate_X, D_Translate_Y, 0.0f);
-	glScalef(AllLettersSize_X, AllLettersSize_Y, 0.0f);
+	glTranslatef(xPos, yPos, 0.0f);
+	//glScalef(AllLettersSize_X, AllLettersSize_Y, 0.0f);
 
 	glLineWidth(10.0f);
 
@@ -578,66 +596,55 @@ void D(void)
 
 	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
 
-	glVertex3f(-0.1f, 0.185f, 0.0f);
+	glVertex3f(-0.1f * alphaScaleFactor, 0.185f * alphaScaleFactor, 0.0f);
 
-	glVertex3f(0.07f, 0.185f, 0.0f);
+	glVertex3f(0.07f * alphaScaleFactor, 0.185f * alphaScaleFactor, 0.0f);
 
 	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
 
-	glVertex3f(0.06f, 0.195f, 0.0f);
+	glVertex3f(0.06f * alphaScaleFactor, 0.195f * alphaScaleFactor, 0.0f);
 
-	glVertex3f(0.1f, 0.15f, 0.0f);
+	glVertex3f(0.1f * alphaScaleFactor, 0.15f * alphaScaleFactor, 0.0f);
 	
+	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
 
+	glVertex3f(0.1f * alphaScaleFactor, 0.15f * alphaScaleFactor, 0.0f);
 
+	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
+
+	glVertex3f(0.1f * alphaScaleFactor, -0.152f * alphaScaleFactor, 0.0f);
+
+	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
+
+	glVertex3f(-0.1f * alphaScaleFactor, -0.185f * alphaScaleFactor, 0.0f);
+
+	glVertex3f(0.07f * alphaScaleFactor, -0.185f * alphaScaleFactor, 0.0f);
+
+	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
+
+	glVertex3f(0.06f * alphaScaleFactor, -0.195f * alphaScaleFactor, 0.0f);
+
+	glVertex3f(0.1f * alphaScaleFactor, -0.15f * alphaScaleFactor, 0.0f);
 
 	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
 
-	glVertex3f(0.1f, 0.15f, 0.0f);
-
+	glVertex3f(-0.1f * alphaScaleFactor, 0.2f * alphaScaleFactor, 0.0f);
 	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
-
-	glVertex3f(0.1f, -0.152f, 0.0f);
-
-
-
-
-	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
-
-	glVertex3f(-0.1f, -0.185f, 0.0f);
-
-	glVertex3f(0.07f, -0.185f, 0.0f);
-
-	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
-
-	glVertex3f(0.06f, -0.195f, 0.0f);
-
-	glVertex3f(0.1f, -0.15f, 0.0f);
-
-
-
-
-	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
-
-	glVertex3f(-0.1f, 0.2f, 0.0f);
-
-	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
-
-	glVertex3f(-0.1f, -0.2f, 0.0f);
-
+	glVertex3f(-0.1f * alphaScaleFactor, -0.2f * alphaScaleFactor, 0.0f);
 	glEnd();
 
+	glTranslatef(-xPos, -yPos, 0.0f);
 }
 
 
-void A2(void)
+void A2(GLfloat xPos, GLfloat yPos)
 {
 	//A2
-	glLoadIdentity();
-	gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+	//glLoadIdentity();
+	//gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 
-	glTranslatef(A2_Translate_X, A2_Translate_Y, 0.0f);
-	glScalef(AllLettersSize_X, AllLettersSize_Y, 0.0f);
+	glTranslatef(xPos, yPos, 0.0f);
+	//glScalef(AllLettersSize_X, AllLettersSize_Y, 0.0f);
 
 	glLineWidth(10.0f);
 
@@ -645,71 +652,71 @@ void A2(void)
 
 	glColor3f(MidColor_R, MidColor_G, MidColor_B);    //MidColor
 
-	glVertex3f(-0.05f, 0.0f, 0.0f);
+	glVertex3f(-0.05f * alphaScaleFactor, 0.0f * alphaScaleFactor, 0.0f);
 
-	glVertex3f(0.05f, 0.0f, 0.0f);
-
-	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
-
-	glVertex3f(0.0f, 0.2f, 0.0f);
-
-	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
-
-	glVertex3f(-0.1f, -0.2f, 0.0f);
+	glVertex3f(0.05f * alphaScaleFactor, 0.0f * alphaScaleFactor, 0.0f);
 
 	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
 
-	glVertex3f(0.0f, 0.2f, 0.0f);
+	glVertex3f(0.0f * alphaScaleFactor, 0.2f * alphaScaleFactor, 0.0f);
 
 	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
 
-	glVertex3f(0.1f, -0.2f, 0.0f);
+	glVertex3f(-0.1f * alphaScaleFactor, -0.2f * alphaScaleFactor, 0.0f);
+
+	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
+
+	glVertex3f(0.0f * alphaScaleFactor, 0.2f * alphaScaleFactor, 0.0f);
+
+	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
+
+	glVertex3f(0.1f * alphaScaleFactor, -0.2f * alphaScaleFactor, 0.0f);
 
 	glEnd();
+	glTranslatef(-xPos, -yPos, 0.0f);
 }
 
 
-void Y2(void)
+void Y2(GLfloat xPos, GLfloat yPos)
 {
 	//Y2
-	glLoadIdentity();
-	gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+	//glLoadIdentity();
+	//gluLookAt(0.0f, 0.0f, 3.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 
-	glTranslatef(Y2_Translate_X, Y2_Translate_Y, 0.0f);
-	glScalef(AllLettersSize_X, AllLettersSize_Y, 0.0f);
+	glTranslatef(xPos, yPos, 0.0f);
+	//glScalef(AllLettersSize_X, AllLettersSize_Y, 0.0f);
 
 	glLineWidth(10.0f);
 
 	glBegin(GL_LINES);
 
+	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
 
+	glVertex3f(-0.1f * alphaScaleFactor, 0.2f * alphaScaleFactor, 0.0f);
+
+	glColor3f(MidColor_R, MidColor_G, MidColor_B);    //MidColor
+
+	glVertex3f(0.0f * alphaScaleFactor, 0.0f * alphaScaleFactor, 0.0f);
 
 	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
 
-	glVertex3f(-0.1f, 0.2f, 0.0f);
+	glVertex3f(0.1f * alphaScaleFactor, 0.2f * alphaScaleFactor, 0.0f);
 
 	glColor3f(MidColor_R, MidColor_G, MidColor_B);    //MidColor
 
-	glVertex3f(0.0f, 0.0f, 0.0f);
-
-	glColor3f(TopColor_R, TopColor_G, TopColor_B);    //TopColor
-
-	glVertex3f(0.1f, 0.2f, 0.0f);
+	glVertex3f(0.0f * alphaScaleFactor, 0.0f * alphaScaleFactor, 0.0f);
 
 	glColor3f(MidColor_R, MidColor_G, MidColor_B);    //MidColor
 
-	glVertex3f(0.0f, 0.0f, 0.0f);
-
-	glColor3f(MidColor_R, MidColor_G, MidColor_B);    //MidColor
-
-	glVertex3f(0.0f, 0.0f, 0.0f);
+	glVertex3f(0.0f * alphaScaleFactor, 0.0f * alphaScaleFactor, 0.0f);
 
 	glColor3f(BottomColor_R, BottomColor_G, BottomColor_B);    //BottomColor
 
-	glVertex3f(0.0f, -0.2f, 0.0f);
+	glVertex3f(0.0f * alphaScaleFactor, -0.2f * alphaScaleFactor, 0.0f);
 
 
 	glEnd();
+	glTranslatef(-xPos, -yPos, 0.0f);
 }
 
 

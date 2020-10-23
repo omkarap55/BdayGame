@@ -142,7 +142,10 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Background.h" />
     <ClInclude Include="blueScreen.h" />
+    <ClInclude Include="HappyBirthdayLetters.h" />
+    <ClInclude Include="ShowLetter.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="blueScreen.rc" />

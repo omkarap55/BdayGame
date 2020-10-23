@@ -4,26 +4,34 @@
 #include<math.h>
 #include <vector>
 //change 
+
+
 #include<gl/glu.h>
 #include "blueScreen.h"
-
+#include "HappyBirthdayLetters.h"
+#include "balloon.h"
+#include "Background.h"
+//#include "ShowLetter.h"
 #define WIN_WIDTH 800
 #define WIN_HEIGHT 600
 #define PI 3.14159265
 #pragma comment(lib,"opengl32.lib")
 #pragma comment(lib,"glu32.lib")
+#pragma comment(lib,"winmm.lib")
 using namespace std;
 struct Position {
 	GLfloat x,y;
 };
+/*
 struct Color {
 	GLfloat r, g, b;
-};
+};*/
 struct Bullet {
 	Position position;
 };
 struct Jet {
 	Position position;
+	bool isVisible = true;
 };
 
 struct Player {
@@ -32,8 +40,14 @@ struct Player {
 struct Bounds {
 	GLfloat lower, upper;
 };
+struct Letter_Information {
+
+	GLfloat temp_x;
+	GLfloat temp_y;
+
+};
 vector<Bullet> gBullets;
-vector<Jet> gEnemyJets;
+Jet gEnemyJets[13];
 Player gPlayer;
 Bounds bounds_enemyJet = { -1.0f,1.0f };
 
@@ -47,17 +61,28 @@ HWND ghwnd = NULL;
 HDC ghdc = NULL;
 HGLRC ghrc = NULL;
 GLfloat angle = 0.0f;
+struct Letter_Information Letters[13];
 
-
-GLfloat gBulletRadius = 0.08f / 2;
-
+//GLfloat gBulletRadius = 0.08f / 2;
+GLfloat gBulletRadius = 0.5f;
 GLfloat leftSideLimit = 0.0f;
 GLfloat rightSideLimit = 0.0f;
-GLfloat gPlayerSpeed = 0.0008f * 100;
+GLfloat gPlayerSpeed = 0.001f * 500;
 GLfloat gBulletSpeed = 0.1 * gPlayerSpeed;
-GLfloat gEnemyJetSpeed = 0.01 * gPlayerSpeed;
+GLfloat gEnemyJetSpeed = 0.9* 0.01 * gPlayerSpeed;
+GLfloat gInitialLetterSpeed = -gEnemyJetSpeed;
+GLfloat gFinalLetterSpeed = gInitialLetterSpeed * 3.0f;
+GLfloat gCurrentLetterSpeed = 0.0f;
+GLfloat BlinkSpeed = 0.02f;
+GLfloat FinalFrameScale_Z = 10.0f;
+int gActiveLetterIndex = 0;
+//GLfloat gFinalLetterSpeed = 1.2 * gEnemyJetSpeed;
 int windowX = 0;
 int windowY = 0;
+bool gbStretch = false;
+bool gbShowBalloon = true;
+int playBdayMusic = 0;
+bool LettersScaling = false;
 //GLfloat angle = 0.0f;
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int iCmdShow) {
 	void initialize(void);
@@ -66,6 +91,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
 	WNDCLASSEX wndclass;
 	HWND hwnd;
 	MSG msg;
+	//PlaySound(MAKEINTRESOURCE(BG_TRACK), NULL, SND_RESOURCE | SND_ASYNC );
 	if (fopen_s(&gPFile, "log_omi.txt", "w") != 0) {
 		MessageBox(NULL, TEXT("Cannot Open Desired File"), TEXT("File Alert"), MB_OK);
 		exit(0);
@@ -142,6 +168,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam) {
 	//void initBall(void);
 	void initPlayer(void);
 	void initEnemyJets(void);
+	void initLetters(void);
 	int xPos = 0;
 	int yPos = 0;
 	static int prevXPos = -1;
@@ -152,8 +179,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam) {
 		//SetCursorPos(windowX + WIN_WIDTH / 2, windowY + 1.5 *WIN_HEIGHT / 2);
 		
 		initPlayer();
+		initLetters();
 		initEnemyJets();
-	
+		
 		break;
 	case WM_PAINT:
 		break;
@@ -178,12 +206,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam) {
 		case VK_LEFT:
 			gPlayer.position.x = gPlayer.position.x - gPlayerSpeed;
 			break;
-		case VK_UP:
-			gPlayer.position.y = gPlayer.position.y + gPlayerSpeed;
-			break;
-		case VK_DOWN:
-			gPlayer.position.y = gPlayer.position.y - gPlayerSpeed;
-			break;
+		
 		case VK_ESCAPE:
 			DestroyWindow(hwnd);
 			break;
@@ -211,12 +234,27 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT iMsg, WPARAM wParam, LPARAM lParam) {
 		//}
 		 
 		break;
+
 	case WM_LBUTTONDOWN:
+		gbStretch = true;
+		PlaySound(MAKEINTRESOURCE(BOW_STRETCH), NULL, SND_RESOURCE | SND_ASYNC);
+		break;
+
+	case WM_LBUTTONUP:
+		PlaySound(MAKEINTRESOURCE(ARROW_SWOOSH), NULL, SND_RESOURCE | SND_ASYNC);
+		Bullet tempBullet;
+		tempBullet.position.x = gPlayer.position.x;
+		tempBullet.position.y = gPlayer.position.y;
+
+		gBullets.push_back(tempBullet);
+		gbStretch = false;
+		break;
+	/*case WM_LBUTTONDOWN:
 		Bullet tempBullet;
 		tempBullet.position.x = gPlayer.position.x;
 		tempBullet.position.y = gPlayer.position.y;
 		gBullets.push_back(tempBullet);
-		break;
+		break;*/
 	case WM_CLOSE:
 		DestroyWindow(hwnd);
 		break;
@@ -316,29 +354,67 @@ void Resize(int width, int height) {
 void Display(void) {
 	
 	//code
-	//void drawBrick(GLfloat, GLfloat);
-	//void drawBall(GLfloat, GLfloat);
-	//void drawSideBorder(void);
+	
 	void drawBullet(GLfloat, GLfloat);
 	void drawEnemyJet(GLfloat, GLfloat);
 	void drawAircraft2(GLfloat, GLfloat);
+	void H1(GLfloat, GLfloat);
+	void DrawArrow(GLfloat, GLfloat);
+	void DrawBow(GLfloat, GLfloat);
+	void A1(void);
+	void H1(GLfloat, GLfloat);
+	void drawBalloon(float[]);
+	void Background(void);
+	void showLetter(GLfloat, GLfloat, int);
+
 	glClear(GL_COLOR_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glTranslatef(0.0f, 0.0f, -6.0f);
+
+	//glTranslatef(0.0f, 0.0f, FinalFrameScale_Z);
+	gluLookAt(0.0f, 0.0f, FinalFrameScale_Z, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+
+	Background();
+	
+	for (int i = 0; i < gActiveLetterIndex; i++) {
+		//if (gActiveLetterIndex < 13) {
+			showLetter(Letters[i].temp_x, Letters[i].temp_y, i);
+		//}
+		
+	}
+
+	if (gActiveLetterIndex == 13 && playBdayMusic ==0) {
+		playBdayMusic = 1;
+		LettersScaling = true;
+	}
+	if ( playBdayMusic ==1) {
+		
+		PlaySound(MAKEINTRESOURCE(BDAY_TRACK), NULL, SND_RESOURCE | SND_ASYNC);
+		playBdayMusic = 2;
+		//gActiveLetterIndex = -1;
+
+	}
+	if (gActiveLetterIndex < 13) {
+		showLetter(Letters[gActiveLetterIndex].temp_x, Letters[gActiveLetterIndex].temp_y, gActiveLetterIndex);
+	}	
 	
 	if (!gBullets.empty()) {
 		for (int i = 0; i < gBullets.size(); i++) {
-			drawBullet(gBullets[i].position.x, gBullets[i].position.y);
+			
+			DrawArrow(gBullets[i].position.x, gBullets[i].position.y);
 		}
 	}
-	if (!gEnemyJets.empty()) {
-		for (int i = 0; i < gEnemyJets.size(); i++) {
-			drawEnemyJet(gEnemyJets[i].position.x, gEnemyJets[i].position.y);
+
+	if (gActiveLetterIndex<13 && gEnemyJets[gActiveLetterIndex].isVisible) {
+		float balloonPosition[3] = { gEnemyJets[gActiveLetterIndex].position.x, gEnemyJets[gActiveLetterIndex].position.y, 0.0f };
+		drawBalloon(balloonPosition);
 		}
+			
+	glLineWidth(2.0f);
+	if (gActiveLetterIndex < 13) {
+		DrawBow(gPlayer.position.x, gPlayer.position.y);
 	}
-	drawAircraft2(gPlayer.position.x, gPlayer.position.y);
-	//checkCollision(gBallXTranslation, gBallYTranslation);
+		
 	SwapBuffers(ghdc);
 }
 
@@ -362,25 +438,246 @@ void update(void) {
 	}
 
 	// animate enemyjets
-	for (int i = 0; i < gEnemyJets.size(); i++) {
-		gEnemyJets[i].position.y = gEnemyJets[i].position.y - gEnemyJetSpeed;
-	}
-	//check Bullet and enemyJet Collison
-	for (int jetIndex = 0; jetIndex < gEnemyJets.size(); ++jetIndex) {
-		for (int bulletIndex = 0; bulletIndex < gBullets.size(); ++bulletIndex) {
-			if (checkCollision(gEnemyJets[jetIndex].position, gBullets[bulletIndex].position)) {
-				gBullets.erase(gBullets.begin() + bulletIndex);
-				gEnemyJets.erase(gEnemyJets.begin() + jetIndex);
-			}
+	if (gActiveLetterIndex < 13) {
+		gEnemyJets[gActiveLetterIndex].position.y = gEnemyJets[gActiveLetterIndex].position.y - gEnemyJetSpeed;
+		Letters[gActiveLetterIndex].temp_y = Letters[gActiveLetterIndex].temp_y + gCurrentLetterSpeed;
+		if (Letters[gActiveLetterIndex].temp_y < 0.0f) {
+			Letters[gActiveLetterIndex].temp_y = 0.0f;
+			gActiveLetterIndex++;
+
+			gCurrentLetterSpeed = gInitialLetterSpeed;
+			//Letters[gActiveLetterIndex].temp_y = 0.0f;
 		}
 	}
-	if (gEnemyJets.size() == 0) {
-		Jet tempJet;
-		GLfloat randXpos = -1 + static_cast <GLfloat> (rand()) / (static_cast <GLfloat> (RAND_MAX / (1 - (-1))));
-		tempJet.position.x = randXpos;
-		tempJet.position.y = 4.0f;
-		gEnemyJets.push_back(tempJet);
-	}
+	
+	
+
+	//animate letters
+
+	//check Bullet and enemyJet Collison
+	
+		for (int bulletIndex = 0; bulletIndex < gBullets.size(); ++bulletIndex) {
+			if (checkCollision(gEnemyJets[gActiveLetterIndex].position, gBullets[bulletIndex].position)) {
+				PlaySound(MAKEINTRESOURCE(BALLOON_POP_SOUND), NULL, SND_RESOURCE | SND_ASYNC);
+				gBullets.erase(gBullets.begin() + bulletIndex);
+				
+			}
+		}
+		static int blink = 0;
+
+		switch (blink)
+		{
+		case 0:
+
+			//small
+
+			if (SmallStarColor_R > 0.06f)
+			{
+				SmallStarColor_R -= BlinkSpeed;
+			}
+			else
+			{
+				SmallStarColor_R = 0.06f;
+			}
+
+
+			if (SmallStarColor_G > 0.1f)
+			{
+				SmallStarColor_G -= BlinkSpeed;
+			}
+			else
+			{
+				SmallStarColor_G = 0.1f;
+			}
+
+
+			if (SmallStarColor_B > 0.18f)
+			{
+				SmallStarColor_B -= BlinkSpeed;
+			}
+			else
+			{
+				SmallStarColor_B = 0.18f;
+				blink++;
+			}
+
+			//mid
+
+			if (MidStarColor_R < 1.0f)
+			{
+				MidStarColor_R += BlinkSpeed;
+			}
+			else
+			{
+				MidStarColor_R = 1.0f;
+			}
+
+
+			if (MidStarColor_G < 1.0f)
+			{
+				MidStarColor_G += BlinkSpeed;
+			}
+			else
+			{
+				MidStarColor_G = 1.0f;
+			}
+
+
+			if (MidStarColor_B < 1.0f)
+			{
+				MidStarColor_B += BlinkSpeed;
+			}
+			else
+			{
+				MidStarColor_B = 1.0f;
+			}
+
+
+			//big
+
+			if (BigStarColor_R > 0.06f)
+			{
+				BigStarColor_R -= BlinkSpeed;
+			}
+			else
+			{
+				BigStarColor_R = 0.06f;
+			}
+
+
+			if (BigStarColor_G > 0.1f)
+			{
+				BigStarColor_G -= BlinkSpeed;
+			}
+			else
+			{
+				BigStarColor_G = 0.1f;
+			}
+
+
+			if (BigStarColor_B > 0.18f)
+			{
+				BigStarColor_B -= BlinkSpeed;
+			}
+			else
+			{
+				BigStarColor_B = 0.18f;
+
+			}
+
+			break;
+
+
+		case 1:
+
+			//small 
+
+			if (SmallStarColor_R < 1.0f)
+			{
+				SmallStarColor_R += BlinkSpeed;
+			}
+			else
+			{
+				SmallStarColor_R = 1.0f;
+			}
+
+
+			if (SmallStarColor_G < 1.0f)
+			{
+				SmallStarColor_G += BlinkSpeed;
+			}
+			else
+			{
+				SmallStarColor_G = 1.0f;
+			}
+
+
+			if (SmallStarColor_B < 1.0f)
+			{
+				SmallStarColor_B += BlinkSpeed;
+			}
+			else
+			{
+				SmallStarColor_B = 1.0f;
+				blink--;
+			}
+
+
+
+			//mid
+			if (MidStarColor_R > 0.06f)
+			{
+				MidStarColor_R -= BlinkSpeed;
+			}
+			else
+			{
+				MidStarColor_R = 0.06f;
+			}
+
+
+			if (MidStarColor_G > 0.1f)
+			{
+				MidStarColor_G -= BlinkSpeed;
+			}
+			else
+			{
+				MidStarColor_G = 0.1f;
+			}
+
+
+			if (MidStarColor_B > 0.18f)
+			{
+				MidStarColor_B -= BlinkSpeed;
+			}
+			else
+			{
+				MidStarColor_B = 0.18f;
+
+			}
+
+			//big
+			if (BigStarColor_R < 1.0f)
+			{
+				BigStarColor_R += BlinkSpeed;
+			}
+			else
+			{
+				BigStarColor_R = 1.0f;
+			}
+
+
+			if (BigStarColor_G < 1.0f)
+			{
+				BigStarColor_G += BlinkSpeed;
+			}
+			else
+			{
+				BigStarColor_G = 1.0f;
+			}
+
+
+			if (BigStarColor_B < 1.0f)
+			{
+				BigStarColor_B += BlinkSpeed;
+			}
+			else
+			{
+				BigStarColor_B = 1.0f;
+			}
+			break;
+
+		}
+
+		if (LettersScaling == true)
+		{
+			FinalFrameScale_Z -= 0.0009f;
+			if (FinalFrameScale_Z < 9.0f)
+			{
+				LettersScaling = false;
+			}		
+		
+		}		
+	
 }
 void uninitialize(void) {
 
@@ -415,8 +712,10 @@ void uninitialize(void) {
 bool checkCollision(Position jetPosition, Position bulletPosition) {
 	bool checkXCollision(GLfloat, GLfloat);
 	bool checkYCollision(GLfloat, GLfloat);
-	if (checkXCollision(jetPosition.x, bulletPosition.x) && checkYCollision(jetPosition.y, bulletPosition.y)) {
+	if (checkXCollision(jetPosition.x, bulletPosition.x) && checkYCollision(jetPosition.y -1.25, bulletPosition.y)) {
 
+		gCurrentLetterSpeed = gFinalLetterSpeed;
+		gEnemyJets[gActiveLetterIndex].isVisible = false;
 		return true;
 	}
 
@@ -436,17 +735,19 @@ bool checkYCollision(GLfloat jetY, GLfloat bulletY) {
 	return false;
 }
 void initPlayer() {
+	//GLfloat ballReflectorXPos = 0.0f;
 	GLfloat ballReflectorXPos = 0.0f;
-	GLfloat ballReflectorYPos = -1.0f;
+	GLfloat ballReflectorYPos = -2.5f;
 	gPlayer.position.x = ballReflectorXPos;
 	gPlayer.position.y = ballReflectorYPos;
 }
 void initEnemyJets() {
-	Jet tempJet;
-	tempJet.position.x = 0.0f;
-	tempJet.position.y = 4.0f;
-	gEnemyJets.push_back(tempJet);
-
+	
+	for (int i = 0; i < 13; i++) {
+		
+		gEnemyJets[i].position.x = Letters[i].temp_x;
+		gEnemyJets[i].position.y = 5.0f;
+	}
 }
 void drawBullet(GLfloat xPos, GLfloat yPos) {
 	GLfloat angleStep = PI / 10;
@@ -558,3 +859,251 @@ void drawAircraft2(GLfloat xPos, GLfloat yPos) {
 
 }
 
+
+void DrawArrow(GLfloat xPos, GLfloat yPos)
+{
+	glTranslatef(xPos, yPos, 0.0f);
+	glBegin(GL_TRIANGLES);
+	glColor3f(0.78f, 0.78f, 0.78f);
+	glVertex3f(0.0f, 0.0f, 0.0f);
+	glVertex3f(0.0f - 0.2f / 2.8f, 0.0f - 0.5f / 2.8f, 0.0f);
+	glVertex3f(0.0f, 0.0f - 0.3f / 2.8f, 0.0f);
+
+	glVertex3f(0.0f, 0.0f, 0.0f);
+	glVertex3f(0.0f, 0.0f - 0.3f / 2.8f, 0.0f);
+	glVertex3f(0.0f + 0.2f / 2.8f, 0.0f - 0.5f / 2.8f, 0.0f);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glVertex3f(-0.04f / 2.8f, 0.0f - 0.3f / 2.8f, 0.0f);
+	glVertex3f(-0.04f / 2.8f, 0.0f - 1.8f / 2.8f, 0.0f);
+	glVertex3f(0.0f + 0.04f / 2.8f, 0.0f - 1.8f / 2.8f, 0.0f);
+	glVertex3f(0.0f + 0.04f / 2.8f, 0.0f - 0.3f / 2.8f, 0.0f);
+	glEnd();
+
+	glBegin(GL_QUADS);
+	glVertex3f(0.0f, 0.0f - 1.6f / 2.8f, 0.0f);
+	glVertex3f(-0.15f / 2.8f, 0.0f - 1.8f / 2.8f, 0.0f);
+	glVertex3f(-0.15f / 2.8f, 0.0f - 2.0f / 2.8f, 0.0f);
+	glVertex3f(0.0f, 0.0f - 1.8f / 2.8f, 0.0f);
+
+	glVertex3f(0.0f + 0.0f, 0.0f - 1.6f / 2.8f, 0.0f);
+	glVertex3f(0.0f + 0.15f / 2.8f, 0.0f - 1.8f / 2.8f, 0.0f);
+	glVertex3f(0.0f + 0.15f / 2.8f, 0.0f - 2.0f / 2.8f, 0.0f);
+	glVertex3f(0.0f + 0.0f, 0.0f - 1.8f / 2.8f, 0.0f);
+	glEnd();
+
+	glTranslatef(-xPos, -yPos, 0.0f);
+}
+
+void DrawBow(GLfloat xPos, GLfloat yPos)
+{
+	void DrawArrow(GLfloat, GLfloat);
+
+	GLfloat bowTop = 0.0f;//yPos - 1.0f;
+	GLfloat strMidY = bowTop - 0.8f / 2.8f;
+
+	// stretchString position
+	if (gbStretch)
+		strMidY = (-0.8f-0.4 )/ 2.8f;
+
+
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	glTranslatef(xPos, yPos-0.3f, 0.0f);
+	glBegin(GL_QUADS);
+	glColor3f(1.0f, 0.74f, 0.39f);
+	//glColor3f(0.53f, 0.38f, 0.29f);
+
+	glVertex3f(-0.2f/2.8f, bowTop, 0.0f);
+	glVertex3f(-0.3f/2.8f, bowTop - 0.1 / 2.8f, 0.0f);
+	glVertex3f(0.3f/2.8f, bowTop - 0.1 / 2.8f, 0.0f);
+	glVertex3f(0.2f/2.8f, bowTop, 0.0f);
+
+	glVertex3f(-0.2f/2.8f, bowTop, 0.0f);
+	glVertex3f(-0.5f/2.8f, bowTop + 0.2f / 2.8f, 0.0f);
+	glVertex3f(-0.6f/2.8f, bowTop + 0.1f / 2.8f, 0.0f);
+	glVertex3f(-0.3f/2.8f, bowTop - 0.1f / 2.8f, 0.0f);
+	
+	glVertex3f(-0.5f/2.8f, bowTop + 0.2f/2.8f, 0.0f);
+	glVertex3f(-0.7f/2.8f, bowTop + 0.4f/2.8f, 0.0f);
+	glVertex3f(-0.8f/2.8f, bowTop + 0.2f/2.8f, 0.0f);
+	glVertex3f(-0.6f/2.8f, bowTop + 0.1f/2.8f, 0.0f);
+
+	glVertex3f(-0.7f/2.8f, bowTop + 0.4f/2.8f, 0.0f);
+	glVertex3f(-0.8f/2.8f, bowTop + 0.5f/2.8f, 0.0f);
+	glVertex3f(-0.9f/2.8f, bowTop + 0.2f/2.8f, 0.0f);
+	glVertex3f(-0.8f/2.8f, bowTop + 0.2f/2.8f, 0.0f);
+	
+	glVertex3f(-0.8f/2.8f, bowTop + 0.5f/2.8f, 0.0f);
+	glVertex3f(-1.1f/2.8f, bowTop + 0.5f/2.8f, 0.0f);
+	glVertex3f(-1.0f/2.8f, bowTop + 0.2f/2.8f, 0.0f);
+	glVertex3f(-0.9f/2.8f, bowTop + 0.2f/2.8f, 0.0f);
+	
+	glVertex3f(-1.1f/2.8f, bowTop + 0.5f / 2.8f, 0.0f);
+	glVertex3f(-1.3f/2.8f, bowTop + 0.47f / 2.8f, 0.0f);
+	glVertex3f(-1.1f/2.8f, bowTop + 0.2f / 2.8f, 0.0f);
+	glVertex3f(-1.0f/2.8f, bowTop + 0.2f / 2.8f, 0.0f);
+	
+	glVertex3f(-1.3f/2.8f, bowTop + 0.47f/2.8f, 0.0f);
+	glVertex3f(-1.5f/2.8f, bowTop + 0.30f/2.8f, 0.0f);
+	glVertex3f(-1.3f/2.8f, bowTop + 0.15f/2.8f, 0.0f);
+	glVertex3f(-1.1f/2.8f, bowTop + 0.2f / 2.8f, 0.0f);
+
+	glVertex3f(-1.5f/2.8f, bowTop + 0.30f / 2.8f, 0.0f);
+	glVertex3f(-2.5f/2.8f, bowTop - 0.8f / 2.8f, 0.0f);
+	glVertex3f(-2.4f/2.8f, bowTop - 0.82f / 2.8f, 0.0f);
+	glVertex3f(-1.3f/2.8f, bowTop + 0.15f / 2.8f, 0.0f);
+
+	// end of bow left
+	glVertex3f(-2.5f/2.8f, bowTop - 0.8f / 2.8f, 0.0f);
+	glVertex3f(-2.6f/2.8f, bowTop - 0.79f / 2.8f, 0.0f);
+	glVertex3f(-2.6f/2.8f, bowTop - 0.81f / 2.8f, 0.0f);
+	glVertex3f(-2.4f/2.8f, bowTop - 0.82f / 2.8f, 0.0f);
+
+	glVertex3f(-2.6f/2.8f, bowTop - 0.79f/2.8f, 0.0f);
+	glVertex3f(-2.7f/2.8f, bowTop - 0.65f/2.8f, 0.0f);
+	glVertex3f(-2.8f/2.8f, bowTop - 0.75f/2.8f, 0.0f);
+	glVertex3f(-2.6f/2.8f, bowTop - 0.81f/2.8f, 0.0f);
+	
+
+	// mirror
+	glVertex3f(0.2f/2.8f, bowTop, 0.0f);
+	glVertex3f(0.5f/2.8f, bowTop + 0.2f / 2.8f, 0.0f);
+	glVertex3f(0.6f/2.8f, bowTop + 0.1f / 2.8f, 0.0f);
+	glVertex3f(0.3f/2.8f, bowTop - 0.1 / 2.8f, 0.0f);
+
+	glVertex3f(0.5f/2.8f, bowTop + 0.2f / 2.8f, 0.0f);
+	glVertex3f(0.7f/2.8f, bowTop + 0.4f / 2.8f, 0.0f);
+	glVertex3f(0.8f/2.8f, bowTop + 0.2f / 2.8f, 0.0f);
+	glVertex3f(0.6f/2.8f, bowTop + 0.1f / 2.8f, 0.0f);
+
+	glVertex3f(0.7f/2.8f, bowTop + 0.4f/2.8f, 0.0f);
+	glVertex3f(0.8f/2.8f, bowTop + 0.5f/2.8f, 0.0f);
+	glVertex3f(0.9f/2.8f, bowTop + 0.2f/2.8f, 0.0f);
+	glVertex3f(0.8f/2.8f, bowTop + 0.2f/2.8f, 0.0f);
+
+	glVertex3f(0.8f/2.8f, bowTop + 0.5f/2.8f, 0.0f);
+	glVertex3f(1.1f/2.8f, bowTop + 0.5f/2.8f, 0.0f);
+	glVertex3f(1.0f/2.8f, bowTop + 0.2f/2.8f, 0.0f);
+	glVertex3f(0.9f/2.8f, bowTop + 0.2f/2.8f, 0.0f);
+
+	glVertex3f(1.3f/2.8f, bowTop + 0.47f / 2.8f, 0.0f);
+	glVertex3f(1.1f/2.8f, bowTop + 0.5f / 2.8f, 0.0f);
+	glVertex3f(1.0f/2.8f, bowTop + 0.2f/2.8f, 0.0f);
+	glVertex3f(1.1f/2.8f, bowTop + 0.2f/2.8f, 0.0f);
+
+	glVertex3f(1.3f/2.8f, bowTop + 0.47f/2.8f, 0.0f);
+	glVertex3f(1.5f/2.8f, bowTop + 0.30f/2.8f, 0.0f);
+	glVertex3f(1.3f/2.8f, bowTop + 0.15f/2.8f, 0.0f);
+	glVertex3f(1.1f/2.8f, bowTop + 0.2f / 2.8f, 0.0f);
+
+	glVertex3f(1.5f/2.8f, bowTop + 0.30f / 2.8f, 0.0f);
+	glVertex3f(2.5f/2.8f, bowTop - 0.8f / 2.8f, 0.0f);
+	glVertex3f(2.4f/2.8f, bowTop - 0.82f / 2.8f, 0.0f);
+	glVertex3f(1.3f/2.8f, bowTop + 0.15f / 2.8f, 0.0f);
+	
+	// end of bow right
+	glVertex3f(2.5f/2.8f, bowTop - 0.8f / 2.8f, 0.0f);
+	glVertex3f(2.6f/2.8f, bowTop - 0.79f/2.8f, 0.0f);
+	glVertex3f(2.6f/2.8f, bowTop - 0.81f/2.8f, 0.0f);
+	glVertex3f(2.4f/2.8f, bowTop - 0.82f/2.8f, 0.0f);
+
+	glVertex3f(2.6f/2.8f, bowTop - 0.79f/2.8f, 0.0f);
+	glVertex3f(2.7f/2.8f, bowTop - 0.65f/2.8f, 0.0f);
+	glVertex3f(2.8f/2.8f, bowTop - 0.75f/2.8f, 0.0f);
+	glVertex3f(2.6f/2.8f, bowTop - 0.81f/2.8f, 0.0f);
+
+	glEnd();
+
+	// Bow string
+	glBegin(GL_LINES);
+	glVertex3f(-2.5f / 2.8f, bowTop - 0.8f / 2.8f, 0.0f);
+	glVertex3f(0.0f, strMidY, 0.0f);
+	glVertex3f(0.0f, strMidY, 0.0f);
+	glVertex3f(2.5f / 2.8f, bowTop - 0.8f / 2.8f, 0.0f);
+	glEnd();
+
+	glTranslatef(-xPos, -yPos+0.3f, 0.0f);
+
+	if (gbStretch)
+		DrawArrow(xPos, yPos);
+}
+
+void drawLetters(GLfloat, GLfloat, int index) {
+
+}
+
+void initLetters() {
+	for (int i = 0; i < 13; i++) {
+		if (i > 4) {
+			Letters[i].temp_x = -4.5f + i * 0.7f + 0.7f;
+		}
+		else {
+			Letters[i].temp_x = -4.5f + i * 0.7f;
+		}
+		
+		Letters[i].temp_y = 3.0f;
+		gCurrentLetterSpeed = gInitialLetterSpeed;
+	}
+}
+
+void showLetter(GLfloat x, GLfloat y, int Index) {
+
+	switch (Index) {
+
+	case 0:
+		H1(x,y);
+			break;
+
+	case 1:
+		A1(x, y);
+		break;
+
+	case 2:
+		P1(x, y);
+		break;
+
+	case 3:
+		P2(x, y);
+		break;
+
+	case 4:
+		Y1(x, y);
+		break;
+
+	case 5:
+		B(x, y);
+		break;
+
+	case 6:
+		I(x, y);
+		break;
+
+	case 7:
+		R(x, y);
+		break;
+
+	case 8:
+		T(x, y);
+		break;
+
+	case 9:
+		H2(x, y);
+		break;
+
+	case 10:
+		D(x, y);
+		break;
+
+	case 11:
+		A2(x, y);
+		break;
+
+	case 12:
+		Y1(x, y);
+		break;
+
+	}
+
+}
